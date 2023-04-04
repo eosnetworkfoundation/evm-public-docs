@@ -1,8 +1,8 @@
-<h1> Multi-sig evm account bootstrapping </h1>
+<h1> Multi-sig EVM account bootstrapping </h1>
 
 <h2> Overview: </h2>
 
-This document will describe the multisig bootstrapping process of EVM contract in mainnet, after the creation of account eosio.evm (see https://github.com/eosnetworkfoundation/evm-public-docs/blob/main/msig_contract_deployment/msig_account_creation.md for previous multisig for account creation details).
+This document will describe the multisig bootstrapping process of EVM contract in mainnet, after the creation of account eosio.evm (see https://github.com/eosnetworkfoundation/evm-public-docs/blob/main/msig_contract_deployment/msig_account_creation.md for previous multisig of eosio.evm account creation ).
 
 Current proposed EVM bootstrapping multisig on mainnet is: https://bloks.io/msig/admin1.enf/evmboot
 

@@ -12,7 +12,7 @@ This runbook is based on several assumptions that must be met.
 1. This upgrade has been approved by all relevant stakeholders.
 1. You have an Amazon Web Services (AWS) IAM user account with the necessary permissions to perform the upgrade(s) in the `evm-testnet` and/or `evm-mainnet` AWS accounts.
 1. The new virtual machine(s):
-    1. Are in the correct availability zones (AZs),
+    1. Are in the correct [availability zones](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md) (AZs),
     1. Have been initialized with upgraded software,
     1. Are prepared to pass health checks if they are functioning correctly, and;
     1. Will fail health checks if they are not functioning correctly.
@@ -20,7 +20,7 @@ This runbook is based on several assumptions that must be met.
 ## Steps
 Here are the steps to take a new set of virtual machines (VMs) running upgraded software for one of our endpoints, deploy them to the endpoint, then remove the existing set of virtual machines running outdated software from our endpoints...ideally with zero downtime for our customers.
 1. Login to the [AWS web console](https://console.aws.amazon.com).
-1. Switch to the intended region in AWS.
+1. Switch to the intended [region in AWS](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md).
 1. Perform a smoke test on the existing endpoint to verify everything is working before making any changes.
     - To guarantee your traffic is being served from these endpoints, use a public virtual private network (VPN) to connect to this part of the world for the smoke test. After the smoke test, you can disconnect.
 1. Perform a smoke test on each and every individual virtual machine to verify the new virtual machines are working as expected.

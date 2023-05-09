@@ -4,6 +4,7 @@ This runbook explains how to take a new set of virtual machines (VMs) running up
 ### Index
 1. [Prerequisites](#prerequisites)
 1. [Steps](#steps)
+1. [Next Steps](#next-steps)
 1. [See Also](#see-also)
 
 ## Prerequisites
@@ -41,6 +42,9 @@ Here are the steps to take a new set of virtual machines (VMs) running upgraded 
     - To guarantee your traffic is being served from these endpoints, use a public virtual private network (VPN) to connect to this part of the world for the smoke test. After the smoke test, you can disconnect.
 
 Repeat this process for the other regions.
+
+## Next Steps
+You may want to leave the outdated virtual machines (VMs) up for 12-24 hours in case there is an issue with the upgrade and you need to rollback. The process to rollback is the same as the upgrade process, where the VMs running the previous version are added and the VMs running the current version are removed. After a sufficient amount of time with no reported issues using the upgraded software, the VMs running outdated software should be terminated to minimize costs.
 
 ## See Also
 - [Runbooks](./README.md)

@@ -1,5 +1,5 @@
 # Endpoint Network Switcharoo
-This runbook explains how to take a new set of virtual machines running upgraded software for one of our endpoints, deploy them to the endpoint, then remove the existing set of virtual machines running outdated software from our endpoints...ideally with zero downtime for our customers.
+This runbook explains how to take a new set of virtual machines (VMs) running upgraded software for one of our endpoints, deploy them to the endpoint, then remove the existing set of virtual machines running outdated software from our endpoints...ideally with zero downtime for our customers.
 
 ### Index
 1. [Prerequisites](#prerequisites)

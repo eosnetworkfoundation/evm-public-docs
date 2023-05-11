@@ -49,6 +49,7 @@ You may want to leave the outdated virtual machines (VMs) up for 12-24 hours in 
 ## See Also
 - EOS-EVM [Cloud Infrastructure](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/README.md)
     - [Availability Zones](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md)
+    - [Endpoint Health Checks](../endpoint-health-checks.md)
     - [Regions](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md)
 - [eos-evm](https://github.com/eosnetworkfoundation/eos-evm) - core EOS Ethereum virtual machine source code
 - [Runbooks](./README.md)

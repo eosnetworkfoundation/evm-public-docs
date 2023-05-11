@@ -59,3 +59,20 @@ Smoke tests for the RPC API.
         "result": "0x39bdd8"
       }
       ```
+1. Verify the RPC API rejects unencrypted requests.
+    - Mainnet
+      ```bash
+      curl -fsSL 'http://api.evm.eosnetwork.com/v3' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
+      ```
+      Currently, we expect you to get a 500 response.
+      ```
+      curl: (22) The requested URL returned error: 500
+      ```
+    - Testnet
+      ```bash
+      curl -fsSL 'http://api.testnet.evm.eosnetwork.com/v3' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
+      ```
+      Currently, we expect you to get a 500 response.
+      ```
+      curl: (22) The requested URL returned error: 500
+      ```

@@ -47,5 +47,8 @@ Repeat this process for the other regions.
 You may want to leave the outdated virtual machines (VMs) up for 12-24 hours in case there is an issue with the upgrade and you need to rollback. The process to rollback is the same as the upgrade process, where the VMs running the previous version are added and the VMs running the current version are removed. After a sufficient amount of time with no reported issues using the upgraded software, the VMs running outdated software should be terminated to minimize costs.
 
 ## See Also
+- EOS-EVM [Cloud Infrastructure](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/README.md)
+    - [Availability Zones](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md)
+    - [Regions](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md)
 - [eos-evm](https://github.com/eosnetworkfoundation/eos-evm) - core EOS Ethereum virtual machine source code
 - [Runbooks](./README.md)

@@ -3,6 +3,7 @@ This document describes the health checks we are using for the EOS-EVM endpoint 
 
 ### Index
 1. [Health Check Definition](#health-check-definition)
+1. [Bridge](#bridge)
 
 ## Health Check Definition
 What is a health check?
@@ -15,3 +16,6 @@ What is a health check?
 > The results of health checks are used to make informed decisions about managing the cloud infrastructure. For example, if a health check identifies a component that is not responding or is experiencing performance issues, it can trigger an automatic response, such as restarting the resource or diverting traffic to alternative resources to maintain the overall availability and reliability of the system.
 >
 > Health checks are crucial for maintaining the operational efficiency and resilience of cloud infrastructure, as they help identify and address potential problems proactively. By continuously monitoring the health of the resources, cloud operators can ensure optimal performance and minimize downtime, leading to improved service quality for users or customers.
+
+## Bridge
+The EOS-EVM bridge is currently determined to be healthy if it returns a 200-299 status code at HTTP:80/.

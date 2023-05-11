@@ -1,4 +1,4 @@
-# evm-public-docs
+# EOS-EVM Public Documentation
 EOS-EVM-related documents for the public.
 
 ## multisig contract deployment:

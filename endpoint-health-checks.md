@@ -21,13 +21,29 @@ What is a health check?
 > Health checks are crucial for maintaining the operational efficiency and resilience of cloud infrastructure, as they help identify and address potential problems proactively. By continuously monitoring the health of the resources, cloud operators can ensure optimal performance and minimize downtime, leading to improved service quality for users or customers.
 
 ## Bridge
-The EOS-EVM bridge is currently determined to be healthy if it returns a 200-299 status code at HTTP:80/.
+The EOS-EVM bridge is currently determined to be healthy if it returns a 200-299 status code at HTTP:80/. We are using the default Amazon Web Services (AWS) health check parameters which, at the time of this writing, are:
+- 30 second interval
+- 5 second timeout
+- Two consecutive failure threshold to transition to "unhealthy"
+- Five consecutive success threshold to transition to "healthy"
 
 ## Explorer
-The EOS-EVM explorer is currently determined to be healthy if it returns a 200-299 status code at HTTP:80/.
+The EOS-EVM explorer is currently determined to be healthy if it returns a 200-299 status code at HTTP:80/. We are using the default Amazon Web Services (AWS) health check parameters which, at the time of this writing, are:
+- 30 second interval
+- 5 second timeout
+- Two consecutive failure threshold to transition to "unhealthy"
+- Five consecutive success threshold to transition to "healthy"
 
 ## Faucet
-The EOS-EVM faucet is currently only available on the testnet, and is hosted by EOS-Nation. We do not currently have health checks for their faucet.
+The EOS-EVM faucet is currently only available on the testnet, and is hosted by EOS-Nation. We are using the default Amazon Web Services (AWS) health check parameters which, at the time of this writing, are:
+- 30 second interval
+- 5 second timeout
+- Two consecutive failure threshold to transition to "unhealthy"
+- Five consecutive success threshold to transition to "healthy"
 
 ## RPC API
-The EOS-EVM RPC API is considered healthy if it returns a 200-299 status code at HTTP:8000/.
+The EOS-EVM RPC API is considered healthy if it returns a 200-299 status code at HTTP:8000/. We are using the default Amazon Web Services (AWS) health check parameters which, at the time of this writing, are:
+- 30 second interval
+- 5 second timeout
+- Two consecutive failure threshold to transition to "unhealthy"
+- Five consecutive success threshold to transition to "healthy"

@@ -6,6 +6,7 @@ This document describes the health checks we are using for the EOS-EVM endpoint 
 1. [Bridge](#bridge)
 1. [Explorer](#explorer)
 1. [Faucet](#faucet)
+1. [RPC API](#rpc-api)
 
 ## Health Check Definition
 What is a health check?
@@ -27,3 +28,6 @@ The EOS-EVM explorer is currently determined to be healthy if it returns a 200-2
 
 ## Faucet
 The EOS-EVM faucet is currently only available on the testnet, and is hosted by EOS-Nation. We do not currently have health checks for their faucet.
+
+## RPC API
+The EOS-EVM RPC API is considered healthy if it returns a 200-299 status code at HTTP:8000/.

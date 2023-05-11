@@ -4,6 +4,7 @@ This document describes the health checks we are using for the EOS-EVM endpoint 
 ### Index
 1. [Health Check Definition](#health-check-definition)
 1. [Bridge](#bridge)
+1. [Explorer](#explorer)
 
 ## Health Check Definition
 What is a health check?
@@ -19,3 +20,6 @@ What is a health check?
 
 ## Bridge
 The EOS-EVM bridge is currently determined to be healthy if it returns a 200-299 status code at HTTP:80/.
+
+## Explorer
+The EOS-EVM explorer is currently determined to be healthy if it returns a 200-299 status code at HTTP:80/.

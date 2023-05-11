@@ -21,9 +21,9 @@ This runbook is based on several assumptions that must be met.
 Here are the steps to take a new set of virtual machines (VMs) running upgraded software for one of our endpoints, deploy them to the endpoint, then remove the existing set of virtual machines running outdated software from our endpoints...ideally with zero downtime for our customers.
 1. Login to the [AWS web console](https://console.aws.amazon.com).
 1. Switch to the intended [region in AWS](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md).
-1. Perform a smoke test on the existing endpoint to verify everything is working before making any changes.
-    - To guarantee your traffic is being served from these endpoints, use a public virtual private network (VPN) to connect to this part of the world for the smoke test. After the smoke test, you can disconnect.
-1. Perform a smoke test on each and every individual virtual machine to verify the new virtual machines are working as expected.
+1. Perform all smoke tests on the existing endpoint to verify everything is working before making any changes.
+    - To guarantee your traffic is being served from these endpoints, use a public virtual private network (VPN) to connect to this part of the world for the smoke tests. After the smoke tests, you can disconnect.
+1. Perform all relevant smoke tests on each and every individual virtual machine to verify the new virtual machines are working as expected.
 1. [EC2](https://console.aws.amazon.com/ec2/home) > Target Groups > `${TARGET_GROUP_NAME}` > Targets > Register targets
     - For example, if you are upgrading the testnet RPC API in the Asia-Pacific datacenter, `${TARGET_GROUP_NAME}` might be `evm-testnet-ap-api-tg`.
 1. Under "Available instances," check the instances with the upgraded software.

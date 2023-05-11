@@ -5,6 +5,7 @@ This document describes the health checks we are using for the EOS-EVM endpoint 
 1. [Health Check Definition](#health-check-definition)
 1. [Bridge](#bridge)
 1. [Explorer](#explorer)
+1. [Faucet](#faucet)
 
 ## Health Check Definition
 What is a health check?
@@ -23,3 +24,6 @@ The EOS-EVM bridge is currently determined to be healthy if it returns a 200-299
 
 ## Explorer
 The EOS-EVM explorer is currently determined to be healthy if it returns a 200-299 status code at HTTP:80/.
+
+## Faucet
+The EOS-EVM faucet is currently only available on the testnet, and is hosted by EOS-Nation. We do not currently have health checks for their faucet.

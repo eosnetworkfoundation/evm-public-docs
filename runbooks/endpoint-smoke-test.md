@@ -6,6 +6,7 @@ This documents the process to validate a given EOS-EVM network endpoint is onlin
 1. [Explorer](#explorer)
 1. [Faucet](#faucet)
 1. [RPC API](#rpc-api)
+1. [See Also](#see-also)
 
 ## Bridge
 Smoke tests for the bridge.
@@ -76,3 +77,7 @@ Smoke tests for the RPC API.
       ```
       curl: (22) The requested URL returned error: 500
       ```
+
+## See Also
+- [Endpoint Health Checks](../endpoint-health-checks.md)
+- [eos-evm](https://github.com/eosnetworkfoundation/eos-evm) - core EOS Ethereum virtual machine source code

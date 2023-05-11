@@ -13,6 +13,7 @@ Our runbooks are as open as possible in the interest of transparency. However, r
 ## Upgrades
 Runbooks for upgrading EOS-EVM components and infrastructure.
 1. Endpoint Upgrade
+    1. [Endpoint Smoke Test](./endpoint-smoke-test.md) - validate a given EOS-EVM network endpoint is online, functional, and qualified to receive public traffic
     1. [Endpoint Network Switcharoo](./endpoint-network-switcharoo.md) - deploy a set of virtual machines with upgraded software to our endpoints
 
 ## See Also

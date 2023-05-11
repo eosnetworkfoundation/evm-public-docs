@@ -1,7 +1,8 @@
 # EOS-EVM Public Documentation
 EOS-EVM-related documents for the public.
 
-## multisig contract deployment:
+## Multisig Contract Deployment
+Documentation around deploying the EOS-EVM.
 
 ### multisig account creation of eosio.evm: 
 please refer to https://github.com/eosnetworkfoundation/evm-public-docs/blob/main/msig_contract_deployment/msig_account_creation.md

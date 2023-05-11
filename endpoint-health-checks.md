@@ -47,3 +47,10 @@ The EOS-EVM RPC API is considered healthy if it returns a 200-299 status code at
 - 5 second timeout
 - Two consecutive failure threshold to transition to "unhealthy"
 - Five consecutive success threshold to transition to "healthy"
+
+***
+**_Legal notice_**  
+This document was generated in collaboration with ChatGPT from OpenAI, a machine learning algorithm or weak artificial intelligence (AI). At the time of this writing, the [OpenAI terms of service agreement](https://openai.com/terms) §3.a states:
+> Your Content. You may provide input to the Services (“Input”), and receive output generated and returned by the Services based on the Input (“Output”). Input and Output are collectively “Content.” As between the parties and to the extent permitted by applicable law, you own all Input, and subject to your compliance with these Terms, OpenAI hereby assigns to you all its right, title and interest in and to Output.
+
+This notice is required in some countries.

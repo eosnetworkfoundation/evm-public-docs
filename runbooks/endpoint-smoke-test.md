@@ -5,6 +5,7 @@ This documents the process to validate a given EOS-EVM network endpoint is onlin
 1. [Bridge](#bridge)
 1. [Explorer](#explorer)
 1. [Faucet](#faucet)
+1. [RPC API](#rpc-api)
 
 ## Bridge
 Smoke tests for the bridge.
@@ -22,3 +23,31 @@ Smoke tests for the explorer.
 Smoke tests for the faucet.
 1. Navigate to the faucet in your web browser and verify it loads.
     - [faucet.testnet.evm.eosnetwork.com](https://faucet.testnet.evm.eosnetwork.com)
+
+## RPC API
+Smoke tests for the RPC API.
+1. Verify the RPC API returns the head block.
+    - Mainnet
+      ```bash
+      curl -fsSL https://api.evm.eosnetwork.com/v3 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
+      ```
+      You should see something like this, where the `result` field will vary by incrementing once per second.
+      ```json
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": "0x39bdd8"
+      }
+      ```
+    - Testnet
+      ```bash
+      curl -fsSL https://api.testnet.evm.eosnetwork.com/v3 -X POST -H "Content-Type: application/json" --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
+      ```
+      You should see something like this, where the `result` field will vary by incrementing once per second.
+      ```json
+      {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "result": "0x39bdd8"
+      }
+      ```

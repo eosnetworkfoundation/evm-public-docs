@@ -12,17 +12,25 @@ Smoke tests for the bridge.
 1. Navigate to the bridge in your web browser and verify it loads.
     - [bridge.evm.eosnetwork.com](https://bridge.evm.eosnetwork.com)
     - [bridge.testnet.evm.eosnetwork.com](https://bridge.testnet.evm.eosnetwork.com)
+1. Verify the endpoint redirects your web browser from HTTP to HTTPS when attempting to load it unencrypted.
+    - [bridge.evm.eosnetwork.com](http://bridge.evm.eosnetwork.com)
+    - [bridge.testnet.evm.eosnetwork.com](http://bridge.testnet.evm.eosnetwork.com)
 
 ## Explorer
 Smoke tests for the explorer.
 1. Navigate to the explorer in your web browser and verify it loads.
     - [explorer.evm.eosnetwork.com](https://explorer.evm.eosnetwork.com)
     - [explorer.testnet.evm.eosnetwork.com](https://explorer.testnet.evm.eosnetwork.com)
+1. Verify the endpoint redirects your web browser from HTTP to HTTPS when attempting to load it unencrypted.
+    - [explorer.evm.eosnetwork.com](http://explorer.evm.eosnetwork.com)
+    - [explorer.testnet.evm.eosnetwork.com](http://explorer.testnet.evm.eosnetwork.com)
 
 ## Faucet
 Smoke tests for the faucet.
 1. Navigate to the faucet in your web browser and verify it loads.
     - [faucet.testnet.evm.eosnetwork.com](https://faucet.testnet.evm.eosnetwork.com)
+1. Verify the endpoint redirects your web browser from HTTP to HTTPS when attempting to load it unencrypted.
+    - [faucet.testnet.evm.eosnetwork.com](http://faucet.testnet.evm.eosnetwork.com)
 
 ## RPC API
 Smoke tests for the RPC API.

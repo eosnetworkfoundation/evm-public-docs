@@ -14,8 +14,8 @@ This runbook is based on several assumptions that must be met.
 1. The new virtual machine(s):
     1. Are in the correct [availability zones](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md) (AZs),
     1. Have been initialized with upgraded software,
-    1. Are prepared to pass health checks if they are functioning correctly, and;
-    1. Will fail health checks if they are not functioning correctly.
+    1. Are prepared to pass [health checks](../endpoint-health-checks.md) if they are functioning correctly, and;
+    1. Will fail [health checks](../endpoint-health-checks.md) if they are not functioning correctly.
 
 ## Steps
 Here are the steps to take a new set of virtual machines (VMs) running upgraded software for one of our endpoints, deploy them to the endpoint, then remove the existing set of virtual machines running outdated software from our endpoints...ideally with zero downtime for our customers.

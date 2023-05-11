@@ -1,6 +1,11 @@
 # EOS-EVM Public Documentation
 EOS-EVM-related documents for the public.
 
+### Index
+1. [Multisig Contract Deployment](#multisig-contract-deployment)
+    1. [Multisig Account Creation of eosio.evm](./msig_contract_deployment/msig_account_creation.md)
+    1. [Multisig EVM Contract Bootstrapping](./msig_contract_deployment/msig_evm_bootstrap.md)
+
 ## Multisig Contract Deployment
 Documentation around deploying the EOS-EVM.
 

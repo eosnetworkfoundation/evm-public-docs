@@ -49,4 +49,3 @@ You may want to leave the outdated virtual machines (VMs) up for 12-24 hours in 
 ## See Also
 - [eos-evm](https://github.com/eosnetworkfoundation/eos-evm) - core EOS Ethereum virtual machine source code
 - [Runbooks](./README.md)
-    - [Upgrade Runbooks](./README.md#upgrades)

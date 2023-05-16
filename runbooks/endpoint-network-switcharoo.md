@@ -22,10 +22,10 @@ Here are the steps to take a new set of virtual machines (VMs) running upgraded 
 1. Login to the [AWS web console](https://console.aws.amazon.com).
 1. Switch to the intended [region in AWS](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md).
     ![1](https://github.com/eosnetworkfoundation/evm-public-docs/assets/34947245/91370d24-6668-4993-ab1e-ef127b370dd2)
-1. Perform all smoke tests on the existing endpoint to verify everything is working before making any changes.
+1. Perform all [smoke tests](./endpoint-smoke-test.md) on the existing endpoint to verify everything is working before making any changes.
     ![2](https://github.com/eosnetworkfoundation/evm-public-docs/assets/34947245/cf1405c5-2183-4616-bde2-515bd17f0431)
-    - To guarantee your traffic is being served from these endpoints, use a public virtual private network (VPN) to connect to this part of the world for the smoke tests. After the smoke tests, you can disconnect.
-1. Perform all relevant smoke tests on each and every individual virtual machine to verify the new virtual machines are working as expected.
+    - To guarantee your traffic is being served from these endpoints, use a public virtual private network (VPN) to connect to this part of the world for the [smoke tests](./endpoint-smoke-test.md). After the [smoke tests](./endpoint-smoke-test.md), you can disconnect.
+1. Perform all relevant [smoke tests](./endpoint-smoke-test.md) on each and every individual virtual machine to verify the new virtual machines are working as expected.
 1. [EC2](https://console.aws.amazon.com/ec2/home) > Target Groups > `${TARGET_GROUP_NAME}` > Targets > Register targets
     ![3](https://github.com/eosnetworkfoundation/evm-public-docs/assets/34947245/66582579-eac3-4583-9ac1-473f179444b6)
     - For example, if you are upgrading the testnet RPC API in the Asia-Pacific datacenter, `${TARGET_GROUP_NAME}` might be `evm-testnet-ap-api-tg`.
@@ -65,6 +65,7 @@ You may want to leave the outdated virtual machines (VMs) up for 12-24 hours in 
 - EOS-EVM [Cloud Infrastructure](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/README.md)
     - [Availability Zones](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md)
     - [Endpoint Health Checks](../endpoint-health-checks.md)
+    - [Endpoint Smoke Tests](./endpoint-smoke-test.md)
     - [Regions](https://github.com/eosnetworkfoundation/eos-evm-internal/blob/main/cloud/aws-region.md)
 - [eos-evm](https://github.com/eosnetworkfoundation/eos-evm) - core EOS Ethereum virtual machine source code
 - [Runbooks](./README.md)

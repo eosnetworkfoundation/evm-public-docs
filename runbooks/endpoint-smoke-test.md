@@ -38,7 +38,7 @@ Smoke tests for the RPC API.
 1. Verify the RPC API returns the head block.
     - Mainnet
       ```bash
-      curl -fsSL 'https://api.evm.eosnetwork.com/v3' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
+      curl -fsSL 'https://api.evm.eosnetwork.com' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
       ```
       You should see something like this, where the `result` field will vary by incrementing once per second.
       ```json
@@ -50,7 +50,7 @@ Smoke tests for the RPC API.
       ```
     - Testnet
       ```bash
-      curl -fsSL 'https://api.testnet.evm.eosnetwork.com/v3' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
+      curl -fsSL 'https://api.testnet.evm.eosnetwork.com' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
       ```
       You should see something like this, where the `result` field will vary by incrementing once per second.
       ```json
@@ -63,7 +63,7 @@ Smoke tests for the RPC API.
 1. Verify the RPC API rejects unencrypted requests.
     - Mainnet
       ```bash
-      curl -fsSL 'http://api.evm.eosnetwork.com/v3' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
+      curl -fsSL 'http://api.evm.eosnetwork.com' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
       ```
       Currently, we expect you to get a 500 response.
       ```
@@ -71,7 +71,7 @@ Smoke tests for the RPC API.
       ```
     - Testnet
       ```bash
-      curl -fsSL 'http://api.testnet.evm.eosnetwork.com/v3' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
+      curl -fsSL 'http://api.testnet.evm.eosnetwork.com' -X POST -H 'Content-Type: application/json' --data '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}' | jq .
       ```
       Currently, we expect you to get a 500 response.
       ```

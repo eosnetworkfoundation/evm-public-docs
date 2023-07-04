@@ -61,11 +61,11 @@ for more details please refer to https://github.com/eosnetworkfoundation/eos-evm
 <a name="REN"></a>
 ## Running the EOS (leap) nodes with state_history_plugin (with trace-history=true)
 
-- For the first time: You need a snapshot file whose timestamps is before the EVM genesis timestamp 2023-04-05T02:18:09 UTC.
+- For the first time: You need a snapshot file whose timestamp is before the EVM genesis timestamp 2023-04-05T02:18:09 UTC.
 - The block log and state history logs need to be replayed from the snapshot time and need to be saved together in the periodic backup.
-- The block logs, state-history logs can not be truncated in the future. This is because eos-evm-node may ask for old blocks for replaying the EVM chain. 
-- You can download the snapshot from any public EOS snapshot service providers (such as https://snapshots-main.eossweden.org/), or use your own snapshot.
-- Supported version: Leap 4.x (recommend), Leap 3.x
+- You need to keep the block logs, state-history logs starting from the snapshot point. This is because eos-evm-node may ask for old blocks for replaying the EVM chain. 
+- You can download the snapshot from any public EOS snapshot service providers (such as https://snapshots.eosnation.io/), or use your own snapshot.
+- Supported version: Leap 4.x (recommended), Leap 3.x
   
 example data-dir/config.ini
 ```

@@ -213,12 +213,31 @@ For centralized exchanges it is important to know up to which block number the c
 `
 python3 -c 'from datetime import datetime; print(hex(int((datetime.strptime("2023-06-23T03:10:35.500","%Y-%m-%dT%H:%M:%S.%f")-datetime(1970,1,1)).total_seconds())))'
 `
-to get the EVM irreversible blocktime in hex `0x64950d2b`. By scanning every EVM block, we found out that the EVM blocks up to ```6828746``` are irreversible, because its timestamp is `0x64950d2b`:
+to get the EVM irreversible blocktime in hex `0x64950d2b`. As EVM block time is 1 second most of the time, exchanges or node operators can easily estimate the EVM block number given the block time. By locating the recent (around 180) EVM blocks, we found out that the EVM blocks up to ```6828746``` are irreversible, because its timestamp is `0x64950d2b`:
 
 `
 curl --location --request POST '127.0.0.1:8881/' --header 'Content-Type: application/json' --data-raw '{"method":"eth_getBlockByNumber","params":["6828746",false],"id":0}'
 {"id":0,"jsonrpc":"2.0","result":{"difficulty":"0x1","extraData":"0x","gasLimit":"0x7ffffffffff","gasUsed":"0x0","hash":"0x563fe6290cf38d55e4c4d2c86886032a1734ad1e467b7ce06ff52f12ee378b0d","logsBloom":"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000","miner":"0xbbbbbbbbbbbbbbbbbbbbbbbb5530ea015b900000","mixHash":"0x12df121840088703a9fe2f305eefe25dbe97bc57f7e127d922ffa8d005aceea6","nonce":"0x0000000000000000","number":"0x6832ca","parentHash":"0xafebdcf129bd506cee25892b2f20703e5ae98bd95557a04b91ac0f56a3433824","receiptsRoot":"0x0000000000000000000000000000000000000000000000000000000000000000","sha3Uncles":"0x0000000000000000000000000000000000000000000000000000000000000000","size":"0x202","stateRoot":"0x0000000000000000000000000000000000000000000000000000000000000000","timestamp":"0x64950d2b","totalDifficulty":"0x6832cb","transactions":[],"transactionsRoot":"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421","uncles":[]}}
 `
+
+- please ensure the evm block has a non-empty "mixHash" field, which is important because it corresponds to the block ID of the EOS (L1) chain. If not, then go for the earlier EVM block until the block with mixHash is found, or simply wait sometime and do it again from the beginning.
+- take the first 4 bytes of mixHash. In the above example it is 0x12df1218, convert to decimal number 316609048, which is the block number of the EOS (L1) chain.
+- send a "get_block" request to nodeos and make sure the mixHash is equal to the block id:
+```
+./cleos get block 316609048
+{
+  "timestamp": "2023-06-23T03:10:34.500",
+  "producer": "atticlabeosb",
+  "confirmed": 0,
+  "previous": "12df121796cd96182814f42440afe5d77924f53619bdd92c5855042a3df59516",
+...
+...
+  "id": "12df121840088703a9fe2f305eefe25dbe97bc57f7e127d922ffa8d005aceea6",
+  "block_num": 316609048,
+  "ref_block_prefix": 808451753
+}
+```
+- If yes (which is in the above example), it means that the EVM chain is irreversible up to block 6828746 (where EOS block is 316609048 at 2023-06-23T03:10:34.500). If not, wait sometime until the EVM chain sync up and check again.
 
 ### Monitor funds deposits into exchanges:
 - For EOS tokens on EOS-EVM: Since this is the native token, similar to other ETH compatible networks, exchanges can use similar way to query EVM blocks (such as using eth_getBlockByNumber) up to the last irreversible EVM blocks as explained above. Or query the account balance using eth_getBalance if needed.

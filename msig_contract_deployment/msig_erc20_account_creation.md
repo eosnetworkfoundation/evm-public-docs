@@ -1,7 +1,7 @@
 # Multi-sig account creation of evm accounts for EOS-ERC20 token bridge
 
 ## Overview 
-EOS-EVM will soon support trustless token bridge between tokens on native EOS (for example: USDT on EOS) and ERC-20 compatible tokens on EOS-EVM. (contract implementation can be found in https://github.com/eosnetworkfoundation/evm-bridge-contracts). We need to create the account ```eosio.erc2o``` and ```eosio.evmin``` within this paragraph.
+EOS-EVM will soon support trustless token bridge between tokens on native EOS (for example: USDT on EOS) and ERC-20 compatible tokens on EOS-EVM. (contract implementation can be found in https://github.com/eosnetworkfoundation/evm-bridge-contracts). We need to create the account `eosio.erc2o` and `eosio.evmin`.
 
 ### account eosio.erc2o
 

@@ -22,14 +22,18 @@ Action 1: Deploy core EVM ERC-20 contract to account `eosio.erc2o`. This contrac
   - *setegressfee, setingressfee: actions to control the bridge fee. Ingressfee is charged in form of the native tokens, while egressfee is charged in form on EOS.*
   - *withdrawfee: action to withdraw the accumulated ingress fee*
 
-Action 2: Deploy the new deposit proxy contract to the `eosio.evmin` account. It acts as a proxy in the EOS->EVM flow to receive token and redirect received tokens to proper accounts (either eosio.evm for native EOS token, or eosio.erc2o for other tokens)
+Action 2: add code permission to `eosio.erc2o`
 
-Action 3: Call bridgereg in EOS EVM Contract for the eosio.erc2o receiver (this also opens the balance for eosio.erc2o). Use 0.01 EOS as minimum bridge fee.
+Action 3: Deploy the new deposit proxy contract to the `eosio.evmin` account. It acts as a proxy in the EOS->EVM flow to receive token and redirect received tokens to proper accounts (either eosio.evm for native EOS token, or eosio.erc2o for other tokens)
 
-Action 4: Transfer 100 EOS to eosio.erc2o account in the EVM side as initial bridging funds
+Action 4: add code permission to `eosio.evmin`
 
-Action 5: Call upgradeto action on the erc20 contract to initialize it.
+Action 5: Call bridgereg in EOS EVM Contract for the eosio.erc2o receiver (this also opens the balance for eosio.erc2o). Use 0.01 EOS as minimum bridge fee.
 
-Action 6: Call regtoken on erc20 contract to register the USDT@tethertether token (use JUNGLE@eosio.token for testnet). Use egress fee of 0.01 EOS. User ingress fee of 0.0100 USDT (or 0.0100 JUNGLE on testnet). EVM precision should be 6. Set Name to be same as the symbol. Symbol will be WUSDT on mainnet, WJUNGLE on testnet.
+Action 6: Transfer 100 EOS to eosio.erc2o account in the EVM side as initial bridging funds
+
+Action 7: Call upgradeto action on the erc20 contract to initialize it.
+
+Action 8: Call regtoken on erc20 contract to register the USDT@tethertether token (use JUNGLE@eosio.token for testnet). Use egress fee of 0.01 EOS. User ingress fee of 0.0100 USDT (or 0.0100 JUNGLE on testnet). EVM precision should be 6. Set Name to be same as the symbol. Symbol will be WUSDT on mainnet, WJUNGLE on testnet.
 
 Action 7: Call action to set egress allow list to the same as we have for the EOS EVM Contract.

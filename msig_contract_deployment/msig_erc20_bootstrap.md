@@ -11,7 +11,7 @@ Action 1: Update the existing evm_runtime contract, adding supports for the foll
 
 Action 2: withdraw 300 EOS from the eosio.evm's fee balance to enf for covering RAM and as ERC-20 bridge funds 
 
-## Multi-sig 2: ERC-20 contract bootstrapping
+## Multi-sig 2: ERC-20 contract bootstrapping (depends on Multi-sig 1):
 
 Action 1: Deploy core EVM ERC-20 contract to account `eosio.erc2o`. This contract contains the following actions:
   - *upgrade, upgradeto: set or deploy the ERC-20 upgradable implementation contract into EVM side and register the contract address in eosio.erc2o's multi_index table in EOS side.*
@@ -36,4 +36,4 @@ Action 7: Call upgradeto action on the erc20 contract to initialize it.
 
 Action 8: Call regtoken on erc20 contract to register the USDT@tethertether token (use JUNGLE@eosio.token for testnet). Use egress fee of 0.01 EOS. User ingress fee of 0.0100 USDT (or 0.0100 JUNGLE on testnet). EVM precision should be 6. Set Name to be same as the symbol. Symbol will be WUSDT on mainnet, WJUNGLE on testnet.
 
-Action 7: Call action to set egress allow list to the same as we have for the EOS EVM Contract.
+Action 9: Call action to set egress allow list to the same as we have for the EOS EVM Contract.

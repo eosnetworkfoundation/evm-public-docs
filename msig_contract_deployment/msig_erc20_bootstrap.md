@@ -21,19 +21,27 @@ Action 1: Deploy core EVM ERC-20 contract to account `eosio.erc2o`. This contrac
   - *addregress, removeegress: similar to native EOS bridge, it controls the whilelist of EOS destinaction addresses with deployed code, to prevent misuse of CPU resource.*
   - *setegressfee, setingressfee: actions to control the bridge fee. Ingressfee is charged in form of the native tokens, while egressfee is charged in form on EOS.*
   - *withdrawfee: action to withdraw the accumulated ingress fee*
+    
+(sha256sum 86ae86e6bd6c3fff35a2dc7948626561ab0592c4a87fe2bed74d216079d90c7f  erc20.wasm)
 
-Action 2: add code permission to `eosio.erc2o`
+Action 2: Deplay abi file of core EVM ERC-20 contract
 
-Action 3: Deploy the new deposit proxy contract to the `eosio.evmin` account. It acts as a proxy in the EOS->EVM flow to receive token and redirect received tokens to proper accounts (either eosio.evm for native EOS token, or eosio.erc2o for other tokens)
+(sha256sum 95848c6e56e7ebc2dcaa48671db12eec8f39ff4de308b1b4f0444989fd6484ee  erc20.abi)
 
-Action 4: add code permission to `eosio.evmin`
+Action 3: add code permission to `eosio.erc2o`
 
-Action 5: Call bridgereg in EOS EVM Contract for the eosio.erc2o receiver (this also opens the balance for eosio.erc2o). Use 0.01 EOS as minimum bridge fee.
+Action 4: Deploy the new deposit proxy contract to the `eosio.evmin` account. It acts as a proxy in the EOS->EVM flow to receive token and redirect received tokens to proper accounts (either eosio.evm for native EOS token, or eosio.erc2o for other tokens). No abi file require for this contract.
 
-Action 6: Transfer 100 EOS to eosio.erc2o account in the EVM side as initial bridging funds
+(sha256sum 1472893488d7c721f149bede12709eeb75718de397522331866b2b372170b6b5  deposit_proxy.wasm)
 
-Action 7: Call upgradeto action on the erc20 contract to initialize it.
+Action 5: add code permission to `eosio.evmin`
 
-Action 8: Call regtoken on erc20 contract to register the USDT@tethertether token (use JUNGLE@eosio.token for testnet). Use egress fee of 0.01 EOS. User ingress fee of 0.0100 USDT (or 0.0100 JUNGLE on testnet). EVM precision should be 6. Set Name to be same as the symbol. Symbol will be WUSDT on mainnet, WJUNGLE on testnet.
+Action 6: Call bridgereg in EOS EVM Contract for the eosio.erc2o receiver (this also opens the balance for eosio.erc2o). Use 0.01 EOS as minimum bridge fee.
 
-Action 9: Call action to set egress allow list to the same as we have for the EOS EVM Contract.
+Action 7: Transfer 100 EOS from enf to the eosio.erc2o open balance in the EOS EVM Contract to use as initial bridging funds
+
+Action 8: Call upgradeto action on the erc20 contract to initialize it. (The mainnet implementation contract is 0x9CfbCA2c181425Bd8651AB1587E03c788B081232, and the testnet implementation contract is 0x8ac75488C3B376e13d36CcA6110f985bb65A23c2)
+
+Action 9: Call regtoken on erc20 contract to register the USDT@tethertether token (use JUNGLE@eosio.token for testnet). Use egress fee of 0.01 EOS. User ingress fee of 0.0100 USDT (or 0.0100 JUNGLE on testnet). EVM precision should be 6. Set Name to be same as the symbol. Symbol will be WUSDT on mainnet, WJUNGLE on testnet.
+
+Action 10: Call action to set egress allow list to the same as we have for the EOS EVM Contract.

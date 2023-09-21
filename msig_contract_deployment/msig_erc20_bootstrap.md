@@ -2,14 +2,12 @@
 
 After the creation of ERC20 bridging accounts (`eosio.erc2o` & `eosio.evmin`), we need to bootstrap the bridging contracts:
 
-## Multi-sig 1: Update the latest version of evm_runtime contract & withdraw funds
+## Multi-sig 1: Update the latest version of evm_runtime contract
 
 Action 1: Update the existing evm_runtime contract, adding supports for the following features required for ERC20 bridging:
   - *call action: this action will allow any account in the EOS side acts as the corresponding account (using deterministric reserverd address) in EVM side*
   - *admincall action: this action allow ENF & BPs to co-sign to satisfy eosio.evm@active and act on behalf of any EVM account in emergency situations.*
   - *event mechanisim: this is the mechanisim allowing event generated in the solidity contract in EVM to be sent as bridge message via inline action in native EOS.*
-
-Action 2: withdraw 300 EOS from the eosio.evm's fee balance to enf for covering RAM and as ERC-20 bridge funds 
 
 ## Multi-sig 2: ERC-20 contract bootstrapping (depends on Multi-sig 1):
 
@@ -42,6 +40,11 @@ Action 7: Transfer 100 EOS from enf to the eosio.erc2o open balance in the EOS E
 
 Action 8: Call upgradeto action on the erc20 contract to initialize it. (The mainnet implementation contract is 0x9CfbCA2c181425Bd8651AB1587E03c788B081232, and the testnet implementation contract is 0x8ac75488C3B376e13d36CcA6110f985bb65A23c2)
 
-Action 9: Call regtoken on erc20 contract to register the USDT@tethertether token (use JUNGLE@eosio.token for testnet). Use egress fee of 0.01 EOS. User ingress fee of 0.0100 USDT (or 0.0100 JUNGLE on testnet). EVM precision should be 6. Set Name to be same as the symbol. Symbol will be WUSDT on mainnet, WJUNGLE on testnet.
+Action 9: Call regtoken on erc20 contract to register token as follow:
+|environment|name|symbol|precision|contract & symbol on native EOS|
+|---|---|---|---|---|
+|mainnet|Tether USD (EOS)|USDT|6|USDT@tethertether|
+|testnet|JUNGLE|WJUNGLE|6|JUNGLE@eosio.token|
+
 
 Action 10: Call action to set egress allow list to the same as we have for the EOS EVM Contract.

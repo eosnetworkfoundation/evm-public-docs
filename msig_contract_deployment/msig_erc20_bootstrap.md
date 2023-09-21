@@ -41,10 +41,10 @@ Action 7: Transfer 100 EOS from enf to the eosio.erc2o open balance in the EOS E
 Action 8: Call upgradeto action on the erc20 contract to initialize it. (The mainnet implementation contract is 0x9CfbCA2c181425Bd8651AB1587E03c788B081232, and the testnet implementation contract is 0x8ac75488C3B376e13d36CcA6110f985bb65A23c2)
 
 Action 9: Call regtoken on erc20 contract to register token as follow:
-|environment|name|symbol|precision|contract & symbol on native EOS|
-|---|---|---|---|---|
-|mainnet|Tether USD (EOS)|USDT|6|USDT@tethertether|
-|testnet|JUNGLE|WJUNGLE|6|JUNGLE@eosio.token|
+|environment|name|symbol|precision|ingress fee|egress fee|contract & symbol on native EOS|
+|---|---|---|---|---|---|---|
+|mainnet|Tether USD (EOS)|USDT|6|0.01 USDT|0.01 EOS|USDT@tethertether|
+|testnet|JUNGLE|WJUNGLE|6|0.01 JUNGLE|0.01 EOS|JUNGLE@eosio.token|
 
 
 Action 10: Call action to set egress allow list to the same as we have for the EOS EVM Contract.

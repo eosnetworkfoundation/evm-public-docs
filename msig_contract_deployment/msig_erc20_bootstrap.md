@@ -9,6 +9,10 @@ Action 1: Update the existing evm_runtime contract, adding supports for the foll
   - *admincall action: this action allow ENF & BPs to co-sign to satisfy eosio.evm@active and act on behalf of any EVM account in emergency situations.*
   - *event mechanisim: this is the mechanisim allowing event generated in the solidity contract in EVM to be sent as bridge message via inline action in native EOS.*
 
+```
+sha256sum 66c288293d28a295aa2be75e05d92bebb25833cb3ce05b324370fb846ba3e08a  evm_runtime.wasm
+```
+
 ## Multi-sig 2: ERC-20 contract bootstrapping (depends on Multi-sig 1):
 
 Action 1: Deploy core EVM ERC-20 contract to account `eosio.erc2o`. This contract contains the following actions:
@@ -20,17 +24,23 @@ Action 1: Deploy core EVM ERC-20 contract to account `eosio.erc2o`. This contrac
   - *setegressfee, setingressfee: actions to control the bridge fee. Ingressfee is charged in form of the native tokens, while egressfee is charged in form on EOS.*
   - *withdrawfee: action to withdraw the accumulated ingress fee*
     
-(sha256sum 86ae86e6bd6c3fff35a2dc7948626561ab0592c4a87fe2bed74d216079d90c7f  erc20.wasm)
+```
+sha256sum 86ae86e6bd6c3fff35a2dc7948626561ab0592c4a87fe2bed74d216079d90c7f  erc20.wasm
+```
 
 Action 2: Deplay abi file of core EVM ERC-20 contract
 
-(sha256sum 95848c6e56e7ebc2dcaa48671db12eec8f39ff4de308b1b4f0444989fd6484ee  erc20.abi)
+```
+sha256sum 95848c6e56e7ebc2dcaa48671db12eec8f39ff4de308b1b4f0444989fd6484ee  erc20.abi
+```
 
 Action 3: add code permission to `eosio.erc2o`
 
 Action 4: Deploy the new deposit proxy contract to the `eosio.evmin` account. It acts as a proxy in the EOS->EVM flow to receive token and redirect received tokens to proper accounts (either eosio.evm for native EOS token, or eosio.erc2o for other tokens). No abi file require for this contract.
 
-(sha256sum 1472893488d7c721f149bede12709eeb75718de397522331866b2b372170b6b5  deposit_proxy.wasm)
+```
+sha256sum 1472893488d7c721f149bede12709eeb75718de397522331866b2b372170b6b5  deposit_proxy.wasm
+```
 
 Action 5: add code permission to `eosio.evmin`
 

@@ -47,14 +47,14 @@ OS: Recommend to use ubuntu 22.04
 - EOS (leap) Node: please refer to https://github.com/AntelopeIO/leap
 - eos-evm-node, eos-evm-rpc:
 ```
-git clone https://github.com/eosnetworkfoundation/eos-evm.git
-cd eos-evm
-git checkout release/0.5
+git clone https://github.com/eosnetworkfoundation/eos-evm-node.git
+cd eos-evm-node
+git checkout release/0.6
 git submodule update --init --recursive
 mkdir build; cd build;
 cmake .. && make -j8
 ```
-for more details please refer to https://github.com/eosnetworkfoundation/eos-evm
+for more details please refer to https://github.com/eosnetworkfoundation/eos-evm-node
 
 - Eos-evm-miner: please refer to https://github.com/eosnetworkfoundation/eos-evm-miner
 
@@ -123,11 +123,11 @@ Notes:
 - run the eos-evm-node
 ```
 mkdir ./chain-data
-./eos-evm-node --ship-endpoint=<NODEOS_IP_ADDRESS>:8999 --ship-core-account eosio.evm --chain-data ./chain-data --chain-id=17777 --plugin block_conversion_plugin --plugin blockchain_plugin --nocolor 1  --verbosity=4 --genesis-json=./genesis.json
+./eos-evm-node --ship-endpoint=<NODEOS_IP_ADDRESS>:8999 --ship-core-account eosio.evm --chain-data ./chain-data --plugin block_conversion_plugin --plugin blockchain_plugin --nocolor 1  --verbosity=4 --genesis-json=./genesis.json
 ```
 - run the eos-evm-rpc (must be in the same VM as eos-evm-node)
 ```
-./eos-evm-rpc --api-spec=eth,debug,net,trace --chain-id=17777 --http-port=0.0.0.0:8881 --eos-evm-node=127.0.0.1:8080 --chaindata=./chain-data
+./eos-evm-rpc --api-spec=eth,debug,net,trace --http-port=0.0.0.0:8881 --eos-evm-node=127.0.0.1:8080 --chaindata=./chain-data
 ```
 - The EVM state, logs will be stored in ./chain-data directory
 
@@ -178,9 +178,9 @@ PRIVATE_KEY=5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
 MINER_ACCOUNT=a123
 RPC_ENDPOINTS=http://127.0.0.1:8888|http://192.168.1.1:8888
 PORT=18888
-LOCK_GAS_PRICE=true
-MINER_PERMISSION="active"
-EXPIRE_SEC=60
+LOCK_GAS_PRICE=false
+MINER_PERMISSION=active
+EXPIRE_SEC=300
 ```
 - build and start the miner
 ```

@@ -10,7 +10,8 @@ This document will describes the minimum requirements to deploy and support EOS 
 6. [Running the eos-evm-miner service](#RMS)
 7. [[Exchanges Only]: Calculate the irreversible block number from EOS chain to EOS-EVM Chain](#CRB)
 8. [[EVM-Node operators Only]: Setting up the read-write proxy and explorer](#RWP)
-9. [Known Limitations](#KL)
+9. [Replay the EVM chain for major version upgrades](#REPLAY)
+10. [Known Limitations](#KL)
 
 
 <a name="MA"></a>
@@ -69,8 +70,8 @@ for more details please refer to https://github.com/eosnetworkfoundation/eos-evm
   
 example data-dir/config.ini
 ```
-# 48GB for VM with 64GB RAM, possible require bigger VM in the future
-chain-state-db-size-mb = 49152
+# 96GB for VM with 128GB RAM, possible require bigger VM in the future
+chain-state-db-size-mb = 98304
 
 access-control-allow-credentials = false
 
@@ -260,6 +261,23 @@ For example:
 This is same as https://github.com/eosnetworkfoundation/eos-evm/blob/main/docs/local_testnet_deployment_plan.md
 - Setup the read-write proxy to integrate the ETH read requests (eos-evm-rpc) & write requests (eos-evm-miner) together with a single listening endpoint.
 - Setup your own EOS-EVM Explorer
+
+<a name="REPLAY"></a>
+## Replay the EVM chain for major version upgrades
+Sometime full EVM chain is required if there's a major version upgrade of eos-evm-node. This is the suggested replay process:
+- 1. Use the backup VM (in which leap node is running in irriversible mode so that it won't be any forks) for replaying
+- 2. Gracefully shutdown eos-evm-rpc & eos-evm-node, keep leap node running.
+- 3. Backup the eos-evm-node data folder (specified in --chain-data parameter).
+- 4. Delete everything in the --chain-data folder, but keep the folder itself
+- 5. Replace the eos-evm-node & eos-evm-rpc to the new version
+- 6. Start eos-evm-node & eos-evm-rpc again. Replay will be started automatically.
+- 7. Query the current replay process, normally replay will finished within hours:
+```
+curl --location --request POST '127.0.0.1:8881/' --header 'Content-Type: application/json' --data-raw '{"method":"eth_blockNumber","params":["0x1",false],"id":0}'
+```
+- 8. After replay finishes, gracefully shutdown eos-evm-rpc & eos-evm-node. Make the evm backup of data-dir folder
+- 9. Apply the new binaries & the backup to other eos-evm node.
+
 
 <a name="KL"></a>
 ## Known Limitations

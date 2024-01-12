@@ -30,7 +30,7 @@ Real-time service:
 
 Periodic Backup service: 
     +--VM3-------------------------------------+        +--VM3-----------------------+
-    | leap node running in irrversible mode    | <----- | eos-evm-node & eos-evm-rpc | 
+    | leap node running in irreversible mode    | <----- | eos-evm-node & eos-evm-rpc | 
     | with state_history_plugin enabled        |        +----------------------------+
     +------------------------------------------+         
 ```
@@ -265,7 +265,7 @@ This is same as https://github.com/eosnetworkfoundation/eos-evm/blob/main/docs/l
 <a name="REPLAY"></a>
 ## Replay the EVM chain for major version upgrades
 Sometime full EVM chain is required if there's a major version upgrade of eos-evm-node. This is the suggested replay process:
-- 1. Use the backup VM (in which leap node is running in irriversible mode so that it won't be any forks) for replaying
+- 1. Use the backup VM (in which leap node is running in irreversible mode so that it won't be any forks) for replaying
 - 2. Gracefully shutdown eos-evm-rpc & eos-evm-node, keep leap node running.
 - 3. Backup the eos-evm-node data folder (specified in --chain-data parameter).
 - 4. Delete everything in the --chain-data folder, but keep the folder itself

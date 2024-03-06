@@ -1,6 +1,9 @@
 # EOS-EVM Public Documentation
 EOS-EVM-related documents for the public.
 
+> [!CAUTION]
+> This repo is **public**, do not document [sensitive information](https://github.com/eosnetworkfoundation/engineering/blob/main/standards/secrets.md) here!
+
 ### Index
 1. [Cloud Infrastructure](#cloud-infrastructure)
     1. [Endpoint Health Checks](./endpoint-health-checks.md)

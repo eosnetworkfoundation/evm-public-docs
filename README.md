@@ -22,3 +22,7 @@ Please refer to [msig_contract_deployment/msig_account_creation.md](https://gith
 
 ### Multisig EVM Contract Bootstrapping
 Please refer to [msig_contract_deployment/msig_evm_bootstrap.md](https://github.com/eosnetworkfoundation/evm-public-docs/blob/main/msig_contract_deployment/msig_evm_bootstrap.md).
+
+***
+> **_Legal Notice_**  
+> This repo contains assets created in collaboration with a large language model, machine learning algorithm, or weak artificial intelligence (AI). This notice is required in some countries.

@@ -48,12 +48,12 @@ Responsibility for EOS EVM public endpoint operations is shared between several 
 Tests used to determine if endpoints are healthy live [here](./endpoint-health-check.md).
 
 ### Environments
-There are currently two environments, a staging environment using the testnet chain and a production environment using the mainnet chain.
+There are currently two environments, a staging environment using the testnet chain and a production environment using the mainnet chain. Each environment is deployed to a different Amazon Web Services (AWS) account.
 
-Environment | Chain
---- | ---
-Production | EOS EVM Mainnet
-Staging | EOS EVM Testnet
+Environment | Chain | AWS Account
+--- | --- | ---
+Production | EOS EVM Mainnet | `evm-mainnet`
+Staging | EOS EVM Testnet | `evm-testnet`
 
 The cloud network infrastructure is intentionally kept identical between all environments to increase the likelihood that bugs are discovered before changes are deployed to production.
 

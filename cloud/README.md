@@ -11,7 +11,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
 1. [Endpoints](#endpoints)
     1. [Ownership](#ownership)
     1. [Endpoint Health Check](#endpoint-health-check)
-1. [Environments](#environments)
+    1. [Environments](#environments)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 

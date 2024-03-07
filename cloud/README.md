@@ -50,10 +50,10 @@ Tests used to determine if endpoints are healthy live [here](./endpoint-health-c
 ### Environments
 There are currently two environments, a staging environment using the testnet chain and a production environment using the mainnet chain.
 
-Chain | Environment
+Environment | Chain
 --- | ---
-Mainnet | Production
-Testnet | Staging
+Production | EOS EVM Mainnet
+Staging | EOS EVM Testnet
 
 The cloud network infrastructure is intentionally kept identical between all environments to increase the likelihood that bugs are discovered before changes are deployed to production.
 

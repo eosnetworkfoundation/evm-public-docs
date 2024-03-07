@@ -44,6 +44,10 @@ Responsibility for EOS EVM public endpoint operations is shared between several 
 - **EOS Nation**
     - Faucet API, backend, billing, cloud infrastructure, and frontend.
 
+> [!NOTE]
+> > **2024-03-07**  
+> > EOS Labs recently volunteered to run the public endpoints. That means they will become responsible for all list elements above, except for core software development and probably the faucet.
+
 ### Endpoint Health Check
 Tests used to determine if endpoints are healthy live [here](./endpoint-health-check.md).
 

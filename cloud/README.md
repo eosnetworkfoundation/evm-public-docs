@@ -12,6 +12,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
     1. [Ownership](#ownership)
     1. [Endpoint Health Check](#endpoint-health-check)
 1. [Environments](#environments)
+1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
 ## Endpoints
@@ -55,6 +56,27 @@ Mainnet | Production
 Testnet | Staging
 
 The cloud network infrastructure is intentionally kept identical between the two environments.
+
+## Deployment Strategy
+Infrastructure changes are **always** deployed, _one at a time_, as follows.
+1. A maintenance window is scheduled with stakeholders, during which no other changes are taking place.
+    - This guarantees all stakeholders are informed.
+    - This reduces the number of independent variables, minimizing the time to resolution should service degradation be observed.
+1. Testnet endpoint functionality is verified using a virtual private network (VPN) to perform [smoke tests](../runbooks/endpoint-smoke-test.md) against all affected endpoints, each from a number of different cities.
+    - The cities selected must exercise all datacenters.
+    - The set of cities should be large, to exercise Content delivery networks (CDNs) or other edge compute.
+    - The cities used and results observed must be written down so the tests can be reproduced.
+    - If any tests fail then the deployment must be deferred until the system is in a known-good state.
+1. Changes are deployed to the testnet staging environment.
+1. Testnet endpoint functionality is validated using [smoke tests](../runbooks/endpoint-smoke-test.md) from the same cities as before.
+1. A waiting period is observed.
+    - This gives the community time to identify and report bugs.
+    - This should be two business days to one week, and must be no less than twenty four (24) hours.
+1. Mainnet endpoint functionality is verified using [smoke tests](../runbooks/endpoint-smoke-test.md) from a set of cities meeting the criteria above.
+1. Changes are deployed to the mainnet production environment.
+1. Mainnet endpoint functionality is validated using [smoke tests](../runbooks/endpoint-smoke-test.md) from the same cities as before.
+
+If service degradation is observed at any point in this process then all changes must be reverted, and the process must start over.
 
 ## See Also
 More resources.

@@ -55,7 +55,7 @@ Chain | Environment
 Mainnet | Production
 Testnet | Staging
 
-The cloud network infrastructure is intentionally kept identical between the two environments.
+The cloud network infrastructure is intentionally kept identical between all environments to increase the likelihood that bugs are discovered before changes are deployed to production.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

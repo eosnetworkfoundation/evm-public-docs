@@ -13,7 +13,7 @@ EOS-EVM-related documents for the public.
 1. [See Also](#see-also)
 
 ## Cloud Infrastructure
-Documentation on our cloud infrastructure for the EOS EVM public endpoints.
+Documentation on our cloud infrastructure for the EOS EVM public endpoints lives [here](./cloud/README.md).
 
 ### Endpoint Health Checks
 Tests used to determine if endpoints are healthy are [here](./endpoint-health-checks.md).

@@ -26,7 +26,7 @@ Explorer | [explorer.evm.eosnetwork.com](https://explorer.evm.eosnetwork.com) | 
 Faucet | - | [faucet.testnet.evm.eosnetwork.com](https://faucet.testnet.evm.eosnetwork.com) | Obtain EOS tokens for testing. The faucet is run by [EOS Nation](https://eosnation.io).
 
 ### Ownership
-Ownership ultimately lies with the community, which chose to use on-chain consensus mechanisms to delegate a leadership role in EOS EVM core software development and public endpoint operations to the [EOS Network Foundation](https://eosnetwork.com). The ENF collaborates with community contributors such as [EOS Labs](https://www.eoslabs.io), [EOS Nation](https://eosnation.io), and independent contributors to accomplish these goals.
+Ownership ultimately lies with the community, which chose to use on-chain consensus mechanisms to delegate a leadership role over EOS EVM core software development and public endpoint operations to the [EOS Network Foundation](https://eosnetwork.com). The ENF collaborates with community contributors such as [EOS Labs](https://www.eoslabs.io), [EOS Nation](https://eosnation.io), and independent contributors to accomplish these goals.
 
 Responsibility for EOS EVM public endpoint operations is shared between several teams.
 - **ENF Automation**

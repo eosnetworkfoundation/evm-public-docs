@@ -5,7 +5,11 @@ EOS EVM public endpoint cloud infrastructure documentation.
 > This repo is **public**, do not document [sensitive information](https://github.com/eosnetworkfoundation/engineering/blob/main/standards/secrets.md) here!
 
 ### Index
+1. [Endpoint Health Check](#endpoint-health-check)
 1. [See Also](#see-also)
+
+## Endpoint Health Check
+Tests used to determine if endpoints are healthy live [here](./endpoint-health-check.md).
 
 ## See Also
 More resources.

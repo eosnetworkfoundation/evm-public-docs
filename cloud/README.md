@@ -11,6 +11,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
 1. [Endpoints](#endpoints)
     1. [Ownership](#ownership)
     1. [Endpoint Health Check](#endpoint-health-check)
+1. [Environments](#environments)
 1. [See Also](#see-also)
 
 ## Endpoints
@@ -44,6 +45,16 @@ Responsibility for EOS EVM public endpoint operations is shared between several 
 
 ### Endpoint Health Check
 Tests used to determine if endpoints are healthy live [here](./endpoint-health-check.md).
+
+### Environments
+There are currently two environments, a staging environment using the testnet chain and a production environment using the mainnet chain.
+
+Chain | Environment
+--- | ---
+Mainnet | Production
+Testnet | Staging
+
+The cloud network infrastructure is intentionally kept identical between the two environments.
 
 ## See Also
 More resources.

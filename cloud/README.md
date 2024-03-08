@@ -76,7 +76,7 @@ Deployment | Architecture | Notes
 API | Web App
 Bridge | Web App
 Explorer | Web App
-Faucet | External System | Testnet environment only.
+Faucet | External System | Testnet only.
 Metrics | AWS CloudWatch
 Notifications | Event Handler
 

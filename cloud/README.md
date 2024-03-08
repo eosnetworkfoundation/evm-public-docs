@@ -9,8 +9,8 @@ EOS EVM public endpoint cloud infrastructure documentation.
 
 ### Index
 1. [Endpoints](#endpoints)
-    1. [Ownership](#ownership)
     1. [Endpoint Health Check](#endpoint-health-check)
+    1. [Ownership](#ownership)
     1. [Environments](#environments)
     1. [Deployments](#deployments)
 1. [Deployment Strategy](#deployment-strategy)
@@ -25,6 +25,9 @@ API | `api.evm.eosnetwork.com` | `api.testnet.evm.eosnetwork.com` | RPC API for 
 Bridge | [bridge.evm.eosnetwork.com](https://bridge.evm.eosnetwork.com) | [bridge.testnet.evm.eosnetwork.com](https://bridge.testnet.evm.eosnetwork.com) | Trustless bridge to move EOS tokens between the native chain and the EVM.
 Explorer | [explorer.evm.eosnetwork.com](https://explorer.evm.eosnetwork.com) | [explorer.testnet.evm.eosnetwork.com](https://explorer.testnet.evm.eosnetwork.com) | Block explorer and transaction viewer, running a [fork](https://github.com/eosnetworkfoundation/blockscout) of [Blockscout](https://www.blockscout.com).
 Faucet | - | [faucet.testnet.evm.eosnetwork.com](https://faucet.testnet.evm.eosnetwork.com) | Obtain EOS tokens for testing. The faucet is run by [EOS Nation](https://eosnation.io).
+
+### Endpoint Health Check
+Tests used to determine if endpoints are healthy live [here](./endpoint-health-check.md).
 
 ### Ownership
 Ownership ultimately lies with the community, which chose to use on-chain consensus mechanisms to delegate a leadership role over EOS EVM core software development and public endpoint operations to the [EOS Network Foundation](https://eosnetwork.com). The ENF collaborates with community contributors such as [EOS Labs](https://www.eoslabs.io), [EOS Nation](https://eosnation.io), and independent contributors to accomplish these goals.
@@ -48,9 +51,6 @@ Responsibility for EOS EVM public endpoint operations is shared between several 
 > [!NOTE]
 > > **2024-03-07**  
 > > EOS Labs recently volunteered to run the public endpoints. That means they will become responsible for all list elements above, except for core software development and probably the faucet.
-
-### Endpoint Health Check
-Tests used to determine if endpoints are healthy live [here](./endpoint-health-check.md).
 
 ### Environments
 There are currently two environments, a staging environment using the testnet chain and a production environment using the mainnet chain. Each environment is deployed to a different Amazon Web Services (AWS) account.

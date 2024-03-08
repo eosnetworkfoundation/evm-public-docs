@@ -10,7 +10,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
 ### Index
 1. [Endpoints](#endpoints)
     1. [Endpoint Health Check](#endpoint-health-check)
-    1. [Ownership](#ownership)
+1. [Ownership](#ownership)
     1. [Environments](#environments)
     1. [Deployments](#deployments)
 1. [Deployment Strategy](#deployment-strategy)
@@ -29,7 +29,7 @@ Faucet | - | [faucet.testnet.evm.eosnetwork.com](https://faucet.testnet.evm.eosn
 ### Endpoint Health Check
 Tests used to determine if endpoints are healthy live [here](./endpoint-health-check.md).
 
-### Ownership
+## Ownership
 Ownership ultimately lies with the community, which chose to use on-chain consensus mechanisms to delegate a leadership role over EOS EVM core software development and public endpoint operations to the [EOS Network Foundation](https://eosnetwork.com). The ENF collaborates with community contributors such as [EOS Labs](https://www.eoslabs.io), [EOS Nation](https://eosnation.io), and independent contributors to accomplish these goals.
 
 Responsibility for EOS EVM public endpoint operations is shared between several teams.

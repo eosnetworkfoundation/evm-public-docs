@@ -57,7 +57,7 @@ Responsibility for EOS EVM public endpoint operations is shared between several 
 The EOS EVM infrastructure is hosted on Amazon Web Services (AWS) and deployed manually.
 
 ### Environments
-There are currently two environments, a staging environment using the testnet chain and a production environment using the mainnet chain. Each environment is deployed to a different Amazon Web Services (AWS) account.
+There are currently two environments, a staging environment using the testnet chain and a production environment using the mainnet chain. Each environment is deployed to a different AWS account.
 
 Environment | Chain | AWS Account
 --- | --- | ---

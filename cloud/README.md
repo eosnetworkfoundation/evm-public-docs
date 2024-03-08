@@ -14,6 +14,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
 1. [Layout](#layout)
     1. [Environments](#environments)
     1. [Deployments](#deployments)
+    1. [Datacenters](#datacenters)
 1. [Architecture](#architecture)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
@@ -80,6 +81,19 @@ Metrics | AWS CloudWatch
 Notifications | Event Handler
 
 The web apps are all deployed the exact same way with the exact same components, so their architecture will be described once.
+
+### Datacenters
+The deployments span multiple [AWS regions](https://aws.amazon.com/about-aws/global-infrastructure/regions_az), which are helpful to think of as datacenters.
+
+Name | Region
+--- | ---
+`ap` | Asia-Pacific
+`us` | United States
+
+All deployments use multiple availability zones (AZs) within each region.
+
+> [!TIP]
+> > Globally distributed datacenters minimize the latency to users and maximize fault tolerance. Catastrophic failure of multiple availability zones in a single region is possible, both [on accident](https://www.theregister.com/2023/04/26/google_cloud_outage) and [on purpose](https://www.wired.com/story/far-right-extremist-allegedly-plotted-blow-up-amazon-data-centers).
 
 ## Architecture
 This document will start from the EOS EVM core software and work outwards to the public endpoints.

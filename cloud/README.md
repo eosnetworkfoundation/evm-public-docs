@@ -11,6 +11,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
 1. [Endpoints](#endpoints)
     1. [Endpoint Health Check](#endpoint-health-check)
 1. [Ownership](#ownership)
+1. [Architecture](#architecture)
     1. [Environments](#environments)
     1. [Deployments](#deployments)
 1. [Deployment Strategy](#deployment-strategy)
@@ -51,6 +52,9 @@ Responsibility for EOS EVM public endpoint operations is shared between several 
 > [!NOTE]
 > > **2024-03-07**  
 > > EOS Labs recently volunteered to run the public endpoints. That means they will become responsible for all list elements above, except for core software development and probably the faucet.
+
+## Architecture
+The EOS EVM infrastructure is hosted on Amazon Web Services (AWS) and deployed manually.
 
 ### Environments
 There are currently two environments, a staging environment using the testnet chain and a production environment using the mainnet chain. Each environment is deployed to a different Amazon Web Services (AWS) account.

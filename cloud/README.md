@@ -12,6 +12,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
     1. [Ownership](#ownership)
     1. [Endpoint Health Check](#endpoint-health-check)
     1. [Environments](#environments)
+    1. [Deployments](#deployments)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -60,6 +61,20 @@ Production | EOS EVM Mainnet | `evm-mainnet`
 Staging | EOS EVM Testnet | `evm-testnet`
 
 The cloud network infrastructure is intentionally kept identical between all environments to increase the likelihood that bugs are discovered before changes are deployed to production.
+
+### Deployments
+Each environment contains the following deployments.
+
+Deployment | Architecture | Notes
+--- | --- | ---
+API | Web App
+Bridge | Web App
+Explorer | Web App
+Faucet | External System | Testnet environment only.
+Metrics | AWS CloudWatch
+Notifications | Event Handler
+
+The web apps are all deployed the exact same way with the exact same components, so their architecture will be described once.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

@@ -16,6 +16,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
     1. [Systems](#systems)
     1. [Datacenters](#datacenters)
     1. [Resources](#resources)
+        1. [Names](#names)
 1. [Architecture](#architecture)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
@@ -98,6 +99,28 @@ All systems use multiple availability zones (AZs) within each region, where appl
 
 ### Resources
 AWS supports user-defined names and tags to help identify resources.
+
+#### Names
+Resource names are intended to be unique and specific enough that they are unambiguous, without being so specific that they aren't safe to discuss in an open forum. The naming schema is...
+```js
+// AWS account name schema
+account = `${product || repo}-${environment}`
+// AWS resource name schema
+resource = `${account}-${datacenter}-${system}-${service}-${component}-${version}`
+```
+...where:
+- **component** - (optional) friendly name used to differentiate components, such as one virtual machine (VM) running a database and another VM running a web server.
+- **datacenter** - documented [above](#datacenters).
+- **environment** - explained [above](#environments).
+- **service** - shorthand for the [AWS service](https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services) containing this resource.
+- **system** - the larger system or deployment this resource is a part of.
+- **version** - (optional) semantic version of software deployed to this resource, used only when resources are deployed concurrently with different versions.
+
+Here are some examples.
+```
+evm-mainnet-ap-api-vm-miner-v0.1.1
+evm-testnet-us-explorer-lb
+```
 
 ## Architecture
 This document will start from the EOS EVM core software and work outwards to the public endpoints.

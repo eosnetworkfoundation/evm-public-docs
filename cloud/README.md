@@ -17,6 +17,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
     1. [Datacenters](#datacenters)
     1. [Resources](#resources)
         1. [Names](#names)
+        1. [Tags](#tags)
 1. [Architecture](#architecture)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
@@ -121,6 +122,24 @@ Here are some examples.
 evm-mainnet-ap-api-vm-miner-v0.1.1
 evm-testnet-us-explorer-lb
 ```
+
+#### Tags
+In addition to the default tags populated by AWS, resources are tagged with the following to provide traceability.
+
+Tag | Type | Deployment | Description
+--- | :---: | :---: | ---
+`billing-use` | Enum | All | Used for cost analysis in the management account (e.g. `evm-api`).
+`branch` | String | Automated | The `git` branch containing the code for this resource, if any.
+`build` | URL | Automated | The URL of the CI/CD build that deployed this resource.
+`commit` | SHA-1 | Automated | The `git` commit containing the code for this resource, if any.
+`email` | Email | All | The email address of the individual who deployed this resource.
+`env` | Enum | All | The environment this resource belongs to (`prod`, `staging`, `dev`, etc.).
+`manual` | Boolean | All | Whether this resource was deployed manually or by an automated system.
+`repo` | URL | Any | The URL of the GitHub repository containing the code for this resource, if any.
+`tag` | String | Any | The `git` tag containing the code for this resource, if any.
+`ticket` | URL | Manual | The ticket authorizing this resource to be deployed.
+
+These tags can also be used as dimensions in the AWS cost analysis tool.
 
 ## Architecture
 This document will start from the EOS EVM core software and work outwards to the public endpoints.

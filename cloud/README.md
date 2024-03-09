@@ -15,6 +15,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
     1. [Environments](#environments)
     1. [Systems](#systems)
     1. [Datacenters](#datacenters)
+    1. [Resources](#resources)
 1. [Architecture](#architecture)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
@@ -94,6 +95,9 @@ All systems use multiple availability zones (AZs) within each region, where appl
 
 > [!TIP]
 > > Globally distributed datacenters minimize the latency to users and maximize fault tolerance. Catastrophic failure of multiple availability zones in a single region is possible, both [on accident](https://www.theregister.com/2023/04/26/google_cloud_outage) and [on purpose](https://www.wired.com/story/far-right-extremist-allegedly-plotted-blow-up-amazon-data-centers).
+
+### Resources
+AWS supports user-defined names and tags to help identify resources.
 
 ## Architecture
 This document will start from the EOS EVM core software and work outwards to the public endpoints.

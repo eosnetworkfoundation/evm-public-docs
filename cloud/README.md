@@ -142,7 +142,7 @@ Tag | Type | Deployment | Description
 These tags can also be used as dimensions in the AWS cost analysis tool.
 
 ## Architecture
-This document will start from the EOS EVM core software and work outwards to the public endpoints.
+This documentation will start from the EOS EVM core software and work outwards to the Internet.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

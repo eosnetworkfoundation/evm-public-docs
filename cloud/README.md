@@ -153,10 +153,10 @@ Faucet | External System | Testnet only.
 Metrics | AWS CloudWatch
 Notifications | Event Handler
 
-The web applications are all deployed almost the exact same way using the exact same components, so the web application architecture will be documented once and any system-specific deviations will be described along the way.
+The web applications are all deployed using the exact same components, so the web application architecture will be documented once and any system-specific deviations will be described along the way.
 
 ### Web Application
-This section will start from the EOS EVM core software and work outwards to the Internet.
+The web application documentation will start from the EOS EVM core software and work outwards to the Internet.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

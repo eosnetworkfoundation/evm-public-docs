@@ -16,7 +16,7 @@ EOS-EVM-related documents for the public.
 <p/>
 <!-- contents markdown begin -->
 
-1. [Cloud Infrastructure](#cloud-infrastructure)
+1. [Cloud Infrastructure](./cloud/README.md)
 1. [Contract Deployment](#multisig-contract-deployment)
     1. [Multisig Account Creation of eosio.evm](./msig_contract_deployment/msig_account_creation.md)
     1. [Multisig EVM Contract Bootstrapping](./msig_contract_deployment/msig_evm_bootstrap.md)
@@ -30,7 +30,7 @@ EOS-EVM-related documents for the public.
 <!-- contents box end -->
 
 ## Cloud Infrastructure
-Documentation on our cloud infrastructure for the EOS EVM public endpoints lives [here](./cloud/README.md).
+Cloud infrastructure documentation for the EOS EVM public endpoints lives [here](./cloud/README.md).
 
 ## Contract Deployment
 Documentation around deploying the EOS-EVM.

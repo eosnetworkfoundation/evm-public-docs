@@ -28,6 +28,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Names](#names)
         1. [Tags](#tags)
 1. [System Architecture](#system-architecture)
+    1. [Web Application](#web-application)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -153,6 +154,9 @@ Metrics | AWS CloudWatch
 Notifications | Event Handler
 
 The web applications are all deployed almost the exact same way using the exact same components, so the web application architecture will be documented once and any system-specific deviations will be described along the way.
+
+### Web Application
+This section will start from the EOS EVM core software and work outwards to the Internet.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

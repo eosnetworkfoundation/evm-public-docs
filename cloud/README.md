@@ -161,7 +161,7 @@ Infrastructure changes are **always** deployed, _one at a time_, as follows.
     - This reduces the number of independent variables, minimizing the time to resolution should service degradation be observed.
 1. Testnet endpoint functionality is verified using a virtual private network (VPN) to perform [smoke tests](../runbooks/endpoint-smoke-test.md) against all affected endpoints, each from a number of different cities.
     - The cities selected must exercise all datacenters.
-    - The set of cities should be large, to exercise Content delivery networks (CDNs) or other edge compute.
+    - The set of cities should be large, to exercise content delivery networks (CDNs) or other edge compute.
     - The cities used and results observed must be written down so the tests can be reproduced.
     - If any tests fail then the deployment must be deferred until the system is in a known-good state.
 1. Changes are deployed to the testnet staging environment.

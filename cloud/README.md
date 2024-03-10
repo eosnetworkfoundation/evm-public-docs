@@ -192,7 +192,7 @@ API | 8000 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
 Bridge | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
 Explorer | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
 
-A virtual machine must meet the success threshold using _consecutive_ responses to transition into the healthy state and begin receiving traffic. The failure threshold is also determined using _consecutive_ timeouts or bad status codes.
+A virtual machine must meet the success threshold using **_consecutive_** responses to transition into the healthy state and begin receiving traffic. The failure threshold is also determined using **_consecutive_** timeouts or bad status codes.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

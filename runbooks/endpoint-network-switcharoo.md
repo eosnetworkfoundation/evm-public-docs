@@ -5,7 +5,7 @@ This runbook explains how to take a new set of virtual machines (VMs) running up
 <table>
 <tr/>
 <tr>
-<td width="150">
+<td width="225">
 <p/>
 <div align="center">
 <b>Contents</b>

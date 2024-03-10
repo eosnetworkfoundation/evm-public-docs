@@ -10,7 +10,7 @@ Our runbooks are as open as possible in the interest of transparency. However, r
 <table>
 <tr/>
 <tr>
-<td width="150">
+<td width="225">
 <p/>
 <div align="center">
 <b>Contents</b>

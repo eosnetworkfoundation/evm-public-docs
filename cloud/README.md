@@ -11,7 +11,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
 <table>
 <tr/>
 <tr>
-<td width="200">
+<td width="300">
 <p/>
 <div align="center">
 <b>Contents</b>

@@ -5,7 +5,7 @@ This documents the process to validate a given EOS-EVM network endpoint is onlin
 <table>
 <tr/>
 <tr>
-<td width="150">
+<td width="225">
 <p/>
 <div align="center">
 <b>Contents</b>

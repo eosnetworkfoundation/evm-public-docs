@@ -1,12 +1,30 @@
 # Endpoint Health Checks
 This document describes the health checks we are using for the EOS-EVM endpoint infrastructure.
 
-### Contents
+<!-- contents box begin -->
+<table>
+<tr/>
+<tr>
+<td>
+<p/>
+<div align="center">
+<b>Contents</b>
+</div>
+<p/>
+<!-- contents markdown begin -->
+
 1. [Health Check Definition](#health-check-definition)
 1. [Bridge](#bridge)
 1. [Explorer](#explorer)
 1. [Faucet](#faucet)
 1. [RPC API](#rpc-api)
+
+<!-- contents markdown end -->
+<p/>
+</td>
+</tr>
+</table>
+<!-- contents box end -->
 
 ## Health Check Definition
 What is a health check?

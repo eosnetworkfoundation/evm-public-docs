@@ -4,13 +4,31 @@ EOS-EVM-related documents for the public.
 > [!CAUTION]
 > This repo is **public**, do not document [sensitive information](https://github.com/eosnetworkfoundation/engineering/blob/main/standards/secrets.md) here!
 
-### Contents
+<!-- contents box begin -->
+<table>
+<tr/>
+<tr>
+<td>
+<p/>
+<div align="center">
+<b>Contents</b>
+</div>
+<p/>
+<!-- contents markdown begin -->
+
 1. [Cloud Infrastructure](#cloud-infrastructure)
     1. [Endpoint Health Check](./cloud/endpoint-health-check.md)
 1. [Contract Deployment](#multisig-contract-deployment)
     1. [Multisig Account Creation of eosio.evm](./msig_contract_deployment/msig_account_creation.md)
     1. [Multisig EVM Contract Bootstrapping](./msig_contract_deployment/msig_evm_bootstrap.md)
 1. [See Also](#see-also)
+
+<!-- contents markdown end -->
+<p/>
+</td>
+</tr>
+</table>
+<!-- contents box end -->
 
 ## Cloud Infrastructure
 Documentation on our cloud infrastructure for the EOS EVM public endpoints lives [here](./cloud/README.md).

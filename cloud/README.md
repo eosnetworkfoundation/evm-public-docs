@@ -29,6 +29,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Tags](#tags)
 1. [System Architecture](#system-architecture)
     1. [Web Application](#web-application)
+        1. [Servers](#servers)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -157,6 +158,13 @@ The web applications are all deployed using the exact same components, so the we
 
 ### Web Application
 The web application documentation will start from the EOS EVM core software and work outwards to the Internet.
+
+#### Servers
+The [ENF Engineering team](#ownership) deploys the EOS EVM core software on a set of virtual machines (VMs) using [Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html) instances. The [Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) (RDS) is also used.
+
+> [!NOTE]
+> > **2024-03-09**
+> > The author is not aware of any documentation describing the specific architecture or deployment process used for the public endpoint server infrastructure. However, the RPC API deployment does look somewhat like [this](../deployments_plan_for_CEX/readme.md).
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

@@ -144,10 +144,10 @@ These tags can also be used as dimensions in the AWS cost analysis tool.
 Each [environment](#environments) contains the following systems.
 
 System | Architecture | Notes
---- | --- | ---
-API | Web App
-Bridge | Web App
-Explorer | Web App
+--- | :---: | ---
+API | Web Application
+Bridge | Web Application
+Explorer | Web Application
 Faucet | External System | Testnet only.
 Metrics | AWS CloudWatch
 Notifications | Event Handler

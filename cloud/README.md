@@ -32,6 +32,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Servers](#servers)
         1. [Ports](#ports)
         1. [Target Groups](#target-groups)
+        1. [Health Checks](#health-checks)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -181,6 +182,17 @@ These ports are enforced by [security groups](https://docs.aws.amazon.com/vpc/la
 
 #### Target Groups
 A [target group](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html) maps an application load balancer (discussed below) to sets of virtual machines. This mapping includes the port and protocol to be used for both application traffic and health checks. Target groups will only route application traffic to VMs that have satisfied the health checks.
+
+#### Health Checks
+Health checks are performed on a per-VM basis according to a specific set of user-defined rules. An HTTP or HTTPS request is sent to the VM using the specified port and path. The VM must respond in a specific amount of time with an accepted [HTTP status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status). Any payload included in the response is ignored.
+
+System | Port | Path | Protocol | Status Code | Interval (seconds) | Timeout (seconds) | Success Threshold | Failure Threshold
+--- | ---: | --- | :---: | :---: | :---: | :---: | --- | ---
+API | 8000 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
+Bridge | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
+Explorer | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
+
+A virtual machine must meet the success threshold using _consecutive_ responses to transition into the healthy state and begin receiving traffic. The failure threshold is also determined using _consecutive_ timeouts or bad status codes.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

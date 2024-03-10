@@ -28,7 +28,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
     1. [Resources](#resources)
         1. [Names](#names)
         1. [Tags](#tags)
-1. [Architecture](#architecture)
+1. [System Architecture](#system-architecture)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -155,7 +155,7 @@ Tag | Type | Deployment | Description
 
 These tags can also be used as dimensions in the AWS cost analysis tool.
 
-## Architecture
+## System Architecture
 This documentation will start from the EOS EVM core software and work outwards to the Internet.
 
 ## Deployment Strategy

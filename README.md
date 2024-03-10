@@ -17,7 +17,6 @@ EOS-EVM-related documents for the public.
 <!-- contents markdown begin -->
 
 1. [Cloud Infrastructure](#cloud-infrastructure)
-    1. [Endpoint Health Check](./cloud/endpoint-health-check.md)
 1. [Contract Deployment](#multisig-contract-deployment)
     1. [Multisig Account Creation of eosio.evm](./msig_contract_deployment/msig_account_creation.md)
     1. [Multisig EVM Contract Bootstrapping](./msig_contract_deployment/msig_evm_bootstrap.md)

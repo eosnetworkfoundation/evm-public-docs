@@ -181,7 +181,7 @@ Explorer | 80 | HTTP | Web Traffic<br/>Health Check
 These ports are enforced by [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html), a simple [transport and network layer](https://en.wikipedia.org/wiki/OSI_model) AWS firewall service external to the VMs that is required and denies all traffic by default.
 
 #### Target Groups
-A [target group](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html) maps an application load balancer (discussed below) to sets of virtual machines. This mapping includes the port and protocol to be used for both application traffic and health checks. Target groups will only route application traffic to VMs that have satisfied the health checks.
+A [target group](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html) defines a set of targets, all virtual machines in this case, to receive application traffic. This includes the port and protocol to be used for both application traffic and for health checks. Target groups will only route application traffic to targets that have satisfied the health checks.
 
 #### Health Checks
 Health checks are performed on a per-VM basis according to a specific set of user-defined rules. An HTTP or HTTPS request is sent to the VM using the specified port and path. The VM must respond in a specific amount of time with an accepted [HTTP status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status). Any payload included in the response is ignored.

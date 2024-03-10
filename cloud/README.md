@@ -178,7 +178,7 @@ API | 80<br/>8000 | TCP<br/>HTTP | API Traffic<br/>Health Check
 Bridge | 80 | HTTP | Web Traffic<br/>Health Check
 Explorer | 80 | HTTP | Web Traffic<br/>Health Check
 
-These ports are enforced by [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html), an AWS firewall service external to the VMs that is required for all network interfaces and denies all traffic by default.
+These ports are enforced by [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html), a simple [transport and network layer](https://en.wikipedia.org/wiki/OSI_model) AWS firewall service external to the VMs that is required and denies all traffic by default.
 
 #### Target Groups
 A [target group](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html) maps an application load balancer (discussed below) to sets of virtual machines. This mapping includes the port and protocol to be used for both application traffic and health checks. Target groups will only route application traffic to VMs that have satisfied the health checks.

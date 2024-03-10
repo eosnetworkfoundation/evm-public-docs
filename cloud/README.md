@@ -152,7 +152,7 @@ Faucet | External System | Testnet only.
 Metrics | AWS CloudWatch
 Notifications | Event Handler
 
-The web apps are all deployed the exact same way with the exact same components, so their architecture will be described once.
+The web applications are all deployed almost the exact same way using the exact same components, so the web application architecture will be documented once and any system-specific deviations will be described along the way.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

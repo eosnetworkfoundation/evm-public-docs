@@ -23,7 +23,6 @@ EOS EVM public endpoint cloud infrastructure documentation.
 1. [Ownership](#ownership)
 1. [Layout](#layout)
     1. [Environments](#environments)
-    1. [Systems](#systems)
     1. [Datacenters](#datacenters)
     1. [Resources](#resources)
         1. [Names](#names)
@@ -85,22 +84,8 @@ Staging | EOS EVM Testnet | `evm-testnet`
 
 The cloud network infrastructure is intentionally kept identical between all environments to increase the likelihood that bugs are discovered before changes are deployed to production.
 
-### Systems
-Each environment contains the following systems.
-
-System | Architecture | Notes
---- | --- | ---
-API | Web App
-Bridge | Web App
-Explorer | Web App
-Faucet | External System | Testnet only.
-Metrics | AWS CloudWatch
-Notifications | Event Handler
-
-The web apps are all deployed the exact same way with the exact same components, so their architecture will be described once.
-
 ### Datacenters
-The systems span multiple [AWS regions](https://aws.amazon.com/about-aws/global-infrastructure/regions_az), which are helpful to think of as datacenters.
+Each environment spans multiple [AWS regions](https://aws.amazon.com/about-aws/global-infrastructure/regions_az), which are helpful to think of as datacenters.
 
 Name | Region
 --- | ---
@@ -156,7 +141,18 @@ Tag | Type | Deployment | Description
 These tags can also be used as dimensions in the AWS cost analysis tool.
 
 ## System Architecture
-This documentation will start from the EOS EVM core software and work outwards to the Internet.
+Each [environment](#environments) contains the following systems.
+
+System | Architecture | Notes
+--- | --- | ---
+API | Web App
+Bridge | Web App
+Explorer | Web App
+Faucet | External System | Testnet only.
+Metrics | AWS CloudWatch
+Notifications | Event Handler
+
+The web apps are all deployed the exact same way with the exact same components, so their architecture will be described once.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

@@ -1,7 +1,7 @@
 # Endpoint Smoke Test
 This documents the process to validate a given EOS-EVM network endpoint is online, functional, and qualified to receive public traffic.
 
-### Index
+### Contents
 1. [Bridge](#bridge)
 1. [Explorer](#explorer)
 1. [Faucet](#faucet)

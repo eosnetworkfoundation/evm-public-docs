@@ -6,7 +6,7 @@ _What are runbooks?_
 
 Our runbooks are as open as possible in the interest of transparency. However, runbooks may link to tables in private repos containing sensitive values where necessary. Secret values should never be committed to GitHub, secrets should be saved and shared using a password manager.
 
-### Index
+### Contents
 1. [Upgrades](#upgrades)
 1. [See Also](#see-also)
 

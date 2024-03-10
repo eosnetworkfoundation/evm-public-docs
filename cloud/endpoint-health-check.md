@@ -1,7 +1,7 @@
 # Endpoint Health Checks
 This document describes the health checks we are using for the EOS-EVM endpoint infrastructure.
 
-### Index
+### Contents
 1. [Health Check Definition](#health-check-definition)
 1. [Bridge](#bridge)
 1. [Explorer](#explorer)

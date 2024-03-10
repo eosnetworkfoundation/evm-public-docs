@@ -7,7 +7,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
 > [!IMPORTANT]
 > > As an open-source software organization funded by and with obligations to our community, we make as much information publicly available as possible. However, [sensitive details](https://github.com/eosnetworkfoundation/engineering/blob/main/standards/secrets.md) are described using labels that are [distinct](https://en.wiktionary.org/wiki/distinct) and [definite](https://en.wiktionary.org/wiki/definite) without being [determinate](https://en.wiktionary.org/wiki/determinate). Documentation in the private [eos-evm-internal](https://github.com/eosnetworkfoundation/eos-evm-internal/tree/main/cloud) repo maps the indeterminate labels to our implementation-specific details. All of these details would be different for anyone else deploying this software stack anyways.
 
-### Index
+### Contents
 1. [Endpoints](#endpoints)
 1. [Ownership](#ownership)
 1. [Layout](#layout)

@@ -390,7 +390,7 @@ ALBs have some additional attributes.
 The EOS EVM public endpoints require clients to use [HTTPS](https://en.wikipedia.org/wiki/HTTPS) with [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) to connect. [TLS termination](https://medium.com/@reach2shristi.81/ssl-tls-termination-b7cc7de3eb54) is performed at the [load balancers](#load-balancers) using an [X.509 certificate](https://en.wikipedia.org/wiki/X.509) from [AWS Certificate Manager](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) (ACM) according to rules defined by any one of several [AWS-provided security policies](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/create-tls-listener.html#describe-ssl-policies).
 
 > [!TIP]
-> > The TLS specification requires servers to select the latest TLS version the client supports.
+> > The TLS specification requires servers to select the latest TLS version the client supports.  
 > > All TLS v1.3 and `ECDHE-*` cipher suites guarantee [forward secrecy](https://en.wikipedia.org/wiki/Forward_secrecy).
 
 <!-- tls table begin -->

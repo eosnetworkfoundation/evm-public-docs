@@ -34,6 +34,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Target Groups](#target-groups)
         1. [Health Checks](#health-checks)
         1. [Load Balancers](#load-balancers)
+        1. [TLS](#tls)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -384,6 +385,104 @@ ALBs have some additional attributes.
 </tr>
 </table>
 <!-- attribute table end -->
+
+#### TLS
+The EOS EVM public endpoints require clients to use [HTTPS](https://en.wikipedia.org/wiki/HTTPS) with [TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) to connect. [TLS termination](https://medium.com/@reach2shristi.81/ssl-tls-termination-b7cc7de3eb54) is performed at the [load balancers](#load-balancers) using an [X.509 certificate](https://en.wikipedia.org/wiki/X.509) from [AWS Certificate Manager](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) (ACM) according to rules defined by any one of several [AWS-provided security policies](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/create-tls-listener.html#describe-ssl-policies).
+
+> [!TIP]
+> > The TLS specification requires servers to select the latest TLS version the client supports.
+> > All TLS v1.3 and `ECDHE-*` cipher suites guarantee [forward secrecy](https://en.wikipedia.org/wiki/Forward_secrecy).
+
+<!-- tls table begin -->
+<table>
+<tr/>
+
+<tr>
+<td align="center"><b>System</b></td>
+<td align="center"><b>Security Policy</b></td>
+<td align="center"><b>TLS Version</b></td>
+<td align="center"><b>Cipher Suite</b></td>
+</tr>
+
+<!-- API -->
+<tr>
+<td rowspan="2"><b>API</b></td>
+<td rowspan="2"><code>ELBSecurityPolicy-TLS13-1-2-Res-2021-06</code></td>
+<td align="center">TLS v1.2</td>
+<td>
+
+`ECDHE-ECDSA-AES128-GCM-SHA256`
+`ECDHE-ECDSA-AES256-GCM-SHA384`
+`ECDHE-RSA-AES128-GCM-SHA256`
+`ECDHE-RSA-AES256-GCM-SHA384`
+
+</td>
+</tr>
+
+<tr>
+<td align="center">TLS v1.3</td>
+<td>
+
+`TLS_AES_128_GCM_SHA256`
+`TLS_AES_256_GCM_SHA384`
+`TLS_CHACHA20_POLY1305_SHA256`
+
+</td>
+</tr>
+
+<!-- Bridge -->
+<tr>
+<td rowspan="2"><b>Bridge</b></td>
+<td rowspan="2"><code>ELBSecurityPolicy-TLS13-1-2-Res-2021-06</code></td>
+<td align="center">TLS v1.2</td>
+<td>
+
+`ECDHE-ECDSA-AES128-GCM-SHA256`
+`ECDHE-ECDSA-AES256-GCM-SHA384`
+`ECDHE-RSA-AES128-GCM-SHA256`
+`ECDHE-RSA-AES256-GCM-SHA384`
+
+</td>
+</tr>
+
+<tr>
+<td align="center">TLS v1.3</td>
+<td>
+
+`TLS_AES_128_GCM_SHA256`
+`TLS_AES_256_GCM_SHA384`
+`TLS_CHACHA20_POLY1305_SHA256`
+
+</td>
+</tr>
+
+<!-- Explorer -->
+<tr>
+<td rowspan="2"><b>Explorer</b></td>
+<td rowspan="2"><code>ELBSecurityPolicy-TLS13-1-2-Res-2021-06</code></td>
+<td align="center">TLS v1.2</td>
+<td>
+
+`ECDHE-ECDSA-AES128-GCM-SHA256`
+`ECDHE-ECDSA-AES256-GCM-SHA384`
+`ECDHE-RSA-AES128-GCM-SHA256`
+`ECDHE-RSA-AES256-GCM-SHA384`
+
+</td>
+</tr>
+
+<tr>
+<td align="center">TLS v1.3</td>
+<td>
+
+`TLS_AES_128_GCM_SHA256`
+`TLS_AES_256_GCM_SHA384`
+`TLS_CHACHA20_POLY1305_SHA256`
+
+</td>
+</tr>
+</table>
+<!-- tls table end -->
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

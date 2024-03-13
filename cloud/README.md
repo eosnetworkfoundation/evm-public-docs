@@ -33,6 +33,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Ports](#ports)
         1. [Target Groups](#target-groups)
         1. [Health Checks](#health-checks)
+        1. [Load Balancers](#load-balancers)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -193,6 +194,195 @@ Bridge | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
 Explorer | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
 
 A virtual machine must meet the success threshold using **_consecutive_** responses to transition into the healthy state and begin receiving traffic. The failure threshold is also determined using **_consecutive_** timeouts or bad status codes.
+
+#### Load Balancers
+An [application load balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) (ALB) operates at the application layer of the [OSI model](https://en.wikipedia.org/wiki/OSI_model) to evenly distribute client traffic between one or more healthy targets, VMs in this case, as determined by [target groups](#target-groups).
+
+> [!TIP]
+> > These ALBs use a routing algorithm known as "least outstanding requests" to distribute traffic among healthy targets within a target group. This algorithm is designed to distribute incoming requests evenly across all healthy targets within the target group based on the number of outstanding requests each target is currently serving. This helps optimize resource utilization and prevents any single target from being overwhelmed with traffic.
+
+![evm-testnet-api-us-lb](https://github.com/eosnetworkfoundation/evm-public-docs/assets/34947245/431f9a66-1e8f-4264-9573-a9c362472263)
+
+Logically, ALBs map client requests from [listeners](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html) to target groups according to user-defined rules.
+
+<!-- listener table begin -->
+<table>
+<tr/>
+
+<tr>
+<td align="center"><b>System</b></td>
+<td align="center"><b>Listener</b></td>
+<td align="center"><b>Rule</b></td>
+</tr>
+
+<!-- API -->
+<tr>
+<td rowspan="2"><b>API</b></td>
+<td align="right">80</td>
+<td>HTTP 301 redirect to <code>https://${host}:443/${path}?${query}</code>.</td>
+</tr>
+
+<tr>
+<td align="right">443</td>
+<td>Forward to target group.</td>
+</tr>
+
+<!-- Bridge -->
+<tr>
+<td rowspan="2"><b>Bridge</b></td>
+<td align="right">80</td>
+<td>HTTP 301 redirect to <code>https://${host}:443/${path}?${query}</code>.</td>
+</tr>
+
+<tr>
+<td align="right">443</td>
+<td>Forward to target group.</td>
+</tr>
+
+<!-- Explorer -->
+<tr>
+<td rowspan="2"><b>Explorer</b></td>
+<td align="right">80</td>
+<td>HTTP 301 redirect to <code>https://${host}:443/${path}?${query}</code>.</td>
+</tr>
+
+<tr>
+<td align="right">443</td>
+<td>Forward to target group.</td>
+</tr>
+</table>
+<!-- listener table end -->
+
+Application load balancers sit behind a [security group](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html), a simple network and transport layer firewall native to AWS that enforces these ports, just like VM network interfaces.
+
+ALBs have some additional attributes.
+
+<!-- attribute table begin -->
+<table>
+<tr/>
+
+<tr>
+<td align="center"><b>System</b></td>
+<td align="center"><b>Attribute</b></td>
+<td align="center"><b>State</b></td>
+<td align="center"><b>Description</b></td>
+</tr>
+
+<!-- API -->
+<tr>
+<td rowspan="6"><b>API</b></td>
+<td>HTTP/2</td>
+<td align="center">On</td>
+<td>Support HTTP/2, and use it by default.</td>
+</tr>
+
+<tr>
+<td>Drop invalid header fields</td>
+<td align="center">Off</td>
+<td>Strip invalid HTTP headers from requests.</td>
+</tr>
+
+<tr>
+<td>Preserve <code>HOST</code> header</td>
+<td align="center">Off</td>
+<td>Preserve client <code>HOST</code> HTTP header for server.</td>
+</tr>
+
+<tr>
+<td><code>X-Forwarded-For</code> header</td>
+<td align="center">Append</td>
+<td>Pack client information in the <code>X-Forwarded-For</code> HTTP header for the server.</td>
+</tr>
+
+<tr>
+<td>Client port preservation</td>
+<td align="center">On</td>
+<td>Include client origin port in <code>X-Forwarded-For</code> header.</td>
+</tr>
+
+<tr>
+<td>TLS version and cipher headers</td>
+<td align="center">On</td>
+<td>Include <code>x-amzn-tls-version</code> and <code>x-amzn-tls-cipher-suite</code> in <code>X-Forwarded-For</code> header.</td>
+</tr>
+
+<!-- Bridge -->
+<tr>
+<td rowspan="6"><b>Bridge</b></td>
+<td>HTTP/2</td>
+<td align="center">On</td>
+<td>Support HTTP/2, and use it by default.</td>
+</tr>
+
+<tr>
+<td>Drop invalid header fields</td>
+<td align="center">Off</td>
+<td>Strip invalid HTTP headers from requests.</td>
+</tr>
+
+<tr>
+<td>Preserve <code>HOST</code> header</td>
+<td align="center">Off</td>
+<td>Preserve client <code>HOST</code> HTTP header for server.</td>
+</tr>
+
+<tr>
+<td><code>X-Forwarded-For</code> header</td>
+<td align="center">Append</td>
+<td>Pack client information in the <code>X-Forwarded-For</code> HTTP header for the server.</td>
+</tr>
+
+<tr>
+<td>Client port preservation</td>
+<td align="center">On</td>
+<td>Include client origin port in <code>X-Forwarded-For</code> header.</td>
+</tr>
+
+<tr>
+<td>TLS version and cipher headers</td>
+<td align="center">On</td>
+<td>Include <code>x-amzn-tls-version</code> and <code>x-amzn-tls-cipher-suite</code> in <code>X-Forwarded-For</code> header.</td>
+</tr>
+
+<!-- Explorer -->
+<tr>
+<td rowspan="6"><b>Explorer</b></td>
+<td>HTTP/2</td>
+<td align="center">On</td>
+<td>Support HTTP/2, and use it by default.</td>
+</tr>
+
+<tr>
+<td>Drop invalid header fields</td>
+<td align="center">Off</td>
+<td>Strip invalid HTTP headers from requests.</td>
+</tr>
+
+<tr>
+<td>Preserve <code>HOST</code> header</td>
+<td align="center">Off</td>
+<td>Preserve client <code>HOST</code> HTTP header for server.</td>
+</tr>
+
+<tr>
+<td><code>X-Forwarded-For</code> header</td>
+<td align="center">Append</td>
+<td>Pack client information in the <code>X-Forwarded-For</code> HTTP header for the server.</td>
+</tr>
+
+<tr>
+<td>Client port preservation</td>
+<td align="center">On</td>
+<td>Include client origin port in <code>X-Forwarded-For</code> header.</td>
+</tr>
+
+<tr>
+<td>TLS version and cipher headers</td>
+<td align="center">On</td>
+<td>Include <code>x-amzn-tls-version</code> and <code>x-amzn-tls-cipher-suite</code> in <code>X-Forwarded-For</code> header.</td>
+</tr>
+</table>
+<!-- attribute table end -->
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

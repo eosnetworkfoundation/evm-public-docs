@@ -50,10 +50,10 @@ The community maintains the following endpoints for the public to interact with 
 
 Endpoint | Mainnet | Testnet | Notes
 --- | :---: | :---: | ---
-API | `api.evm.eosnetwork.com` | `api.testnet.evm.eosnetwork.com` | RPC API for tools like [Frame](https://frame.sh), [MetaMask](https://metamask.io), and [Rabby](https://rabby.io) to interact with the EOS EVM without running a full node.
-Bridge | [bridge.evm.eosnetwork.com](https://bridge.evm.eosnetwork.com) | [bridge.testnet.evm.eosnetwork.com](https://bridge.testnet.evm.eosnetwork.com) | Trustless bridge to move EOS tokens between the native chain and the EVM.
-Explorer | [explorer.evm.eosnetwork.com](https://explorer.evm.eosnetwork.com) | [explorer.testnet.evm.eosnetwork.com](https://explorer.testnet.evm.eosnetwork.com) | Block explorer and transaction viewer, running a [fork](https://github.com/eosnetworkfoundation/blockscout) of [Blockscout](https://www.blockscout.com).
-Faucet | - | [faucet.testnet.evm.eosnetwork.com](https://faucet.testnet.evm.eosnetwork.com) | Obtain EOS tokens for testing. The faucet is run by [EOS Nation](https://eosnation.io).
+**API** | `api.evm.eosnetwork.com` | `api.testnet.evm.eosnetwork.com` | RPC API for tools like [Frame](https://frame.sh), [MetaMask](https://metamask.io), and [Rabby](https://rabby.io) to interact with the EOS EVM without running a full node.
+**Bridge** | [bridge.evm.eosnetwork.com](https://bridge.evm.eosnetwork.com) | [bridge.testnet.evm.eosnetwork.com](https://bridge.testnet.evm.eosnetwork.com) | Trustless bridge to move EOS tokens between the native chain and the EVM.
+**Explorer** | [explorer.evm.eosnetwork.com](https://explorer.evm.eosnetwork.com) | [explorer.testnet.evm.eosnetwork.com](https://explorer.testnet.evm.eosnetwork.com) | Block explorer and transaction viewer, running a [fork](https://github.com/eosnetworkfoundation/blockscout) of [Blockscout](https://www.blockscout.com).
+**Faucet** | - | [faucet.testnet.evm.eosnetwork.com](https://faucet.testnet.evm.eosnetwork.com) | Obtain EOS tokens for testing. The faucet is run by [EOS Nation](https://eosnation.io).
 
 ## Ownership
 Ownership ultimately lies with the community, which chose to use on-chain consensus mechanisms to delegate a leadership role over EOS EVM core software development and public endpoint operations to the [EOS Network Foundation](https://eosnetwork.com). The ENF collaborates with community contributors such as [EOS Labs](https://www.eoslabs.io), [EOS Nation](https://eosnation.io), and independent contributors to accomplish these goals.
@@ -176,9 +176,9 @@ Each VM exposes the application to the cloud network infrastructure through a ne
 
 System | Port | Protocol | Usage
 --- | ---: | :---: | ---
-API | 80<br/>8000 | TCP<br/>HTTP | API Traffic<br/>Health Check
-Bridge | 80 | HTTP | Web Traffic<br/>Health Check
-Explorer | 80 | HTTP | Web Traffic<br/>Health Check
+**API** | 80<br/>8000 | TCP<br/>HTTP | API Traffic<br/>Health Check
+**Bridge** | 80 | HTTP | Web Traffic<br/>Health Check
+**Explorer** | 80 | HTTP | Web Traffic<br/>Health Check
 
 These ports are enforced by [security groups](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html), a simple [transport and network layer](https://en.wikipedia.org/wiki/OSI_model) AWS firewall service external to the VMs that is required and denies all traffic by default.
 
@@ -190,9 +190,9 @@ Health checks are performed on a per-VM basis according to a specific set of use
 
 System | Port | Path | Protocol | Status Code | Interval (seconds) | Timeout (seconds) | Success Threshold | Failure Threshold
 --- | ---: | --- | :---: | :---: | :---: | :---: | --- | ---
-API | 8000 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
-Bridge | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
-Explorer | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
+**API** | 8000 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
+**Bridge** | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
+**Explorer** | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
 
 A virtual machine must meet the success threshold using **_consecutive_** responses to transition into the healthy state and begin receiving traffic. The failure threshold is also determined using **_consecutive_** timeouts or bad status codes.
 

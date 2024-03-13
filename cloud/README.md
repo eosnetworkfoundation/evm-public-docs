@@ -409,25 +409,12 @@ The EOS EVM public endpoints require clients to use [HTTPS](https://en.wikipedia
 <td rowspan="2"><b>API</b></td>
 <td rowspan="2"><code>ELBSecurityPolicy-TLS13-1-2-Res-2021-06</code></td>
 <td align="center">TLS v1.2</td>
-<td>
-
-`ECDHE-ECDSA-AES128-GCM-SHA256`
-`ECDHE-ECDSA-AES256-GCM-SHA384`
-`ECDHE-RSA-AES128-GCM-SHA256`
-`ECDHE-RSA-AES256-GCM-SHA384`
-
-</td>
+<td><code>ECDHE-ECDSA-AES128-GCM-SHA256</code><br/><code>ECDHE-ECDSA-AES256-GCM-SHA384</code><br/><code>ECDHE-RSA-AES128-GCM-SHA256</code><br/><code>ECDHE-RSA-AES256-GCM-SHA384</code></td>
 </tr>
 
 <tr>
 <td align="center">TLS v1.3</td>
-<td>
-
-`TLS_AES_128_GCM_SHA256`
-`TLS_AES_256_GCM_SHA384`
-`TLS_CHACHA20_POLY1305_SHA256`
-
-</td>
+<td><code>TLS_AES_128_GCM_SHA256</code><br/><code>TLS_AES_256_GCM_SHA384</code><br/><code>TLS_CHACHA20_POLY1305_SHA256</code></td>
 </tr>
 
 <!-- Bridge -->
@@ -435,25 +422,12 @@ The EOS EVM public endpoints require clients to use [HTTPS](https://en.wikipedia
 <td rowspan="2"><b>Bridge</b></td>
 <td rowspan="2"><code>ELBSecurityPolicy-TLS13-1-2-Res-2021-06</code></td>
 <td align="center">TLS v1.2</td>
-<td>
-
-`ECDHE-ECDSA-AES128-GCM-SHA256`
-`ECDHE-ECDSA-AES256-GCM-SHA384`
-`ECDHE-RSA-AES128-GCM-SHA256`
-`ECDHE-RSA-AES256-GCM-SHA384`
-
-</td>
+<td><code>ECDHE-ECDSA-AES128-GCM-SHA256</code><br/><code>ECDHE-ECDSA-AES256-GCM-SHA384</code><br/><code>ECDHE-RSA-AES128-GCM-SHA256</code><br/><code>ECDHE-RSA-AES256-GCM-SHA384</code></td>
 </tr>
 
 <tr>
 <td align="center">TLS v1.3</td>
-<td>
-
-`TLS_AES_128_GCM_SHA256`
-`TLS_AES_256_GCM_SHA384`
-`TLS_CHACHA20_POLY1305_SHA256`
-
-</td>
+<td><code>TLS_AES_128_GCM_SHA256</code><br/><code>TLS_AES_256_GCM_SHA384</code><br/><code>TLS_CHACHA20_POLY1305_SHA256</code></td>
 </tr>
 
 <!-- Explorer -->
@@ -461,25 +435,12 @@ The EOS EVM public endpoints require clients to use [HTTPS](https://en.wikipedia
 <td rowspan="2"><b>Explorer</b></td>
 <td rowspan="2"><code>ELBSecurityPolicy-TLS13-1-2-Res-2021-06</code></td>
 <td align="center">TLS v1.2</td>
-<td>
-
-`ECDHE-ECDSA-AES128-GCM-SHA256`
-`ECDHE-ECDSA-AES256-GCM-SHA384`
-`ECDHE-RSA-AES128-GCM-SHA256`
-`ECDHE-RSA-AES256-GCM-SHA384`
-
-</td>
+<td><code>ECDHE-ECDSA-AES128-GCM-SHA256</code><br/><code>ECDHE-ECDSA-AES256-GCM-SHA384</code><br/><code>ECDHE-RSA-AES128-GCM-SHA256</code><br/><code>ECDHE-RSA-AES256-GCM-SHA384</code></td>
 </tr>
 
 <tr>
 <td align="center">TLS v1.3</td>
-<td>
-
-`TLS_AES_128_GCM_SHA256`
-`TLS_AES_256_GCM_SHA384`
-`TLS_CHACHA20_POLY1305_SHA256`
-
-</td>
+<td><code>TLS_AES_128_GCM_SHA256</code><br/><code>TLS_AES_256_GCM_SHA384</code><br/><code>TLS_CHACHA20_POLY1305_SHA256</code></td>
 </tr>
 </table>
 <!-- tls table end -->

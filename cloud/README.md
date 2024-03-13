@@ -253,7 +253,8 @@ Logically, ALBs map client requests from [listeners](https://docs.aws.amazon.com
 </table>
 <!-- listener table end -->
 
-Application load balancers sit behind a [security group](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html), a simple network and transport layer firewall native to AWS that enforces these ports, just like VM network interfaces.
+> [!TIP]
+> > Application load balancers sit behind a [security group](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-groups.html), a simple network and transport layer firewall native to AWS that enforces these ports, just like VM network interfaces.
 
 ALBs have some additional attributes.
 

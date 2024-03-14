@@ -36,6 +36,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Load Balancers](#load-balancers)
         1. [TLS](#tls)
         1. [Certificates](#certificates)
+        1. [Global Accelerator](#global-accelerator)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -196,6 +197,9 @@ System | Port | Path | Protocol | Status Code | Interval (seconds) | Timeout (se
 **Explorer** | 80 | `/` | HTTP | 200-299 | 30 | 5 | 5 responses | 2 requests
 
 A virtual machine must meet the success threshold using **_consecutive_** responses to transition into the healthy state and begin receiving traffic. The failure threshold is also determined using **_consecutive_** timeouts or bad status codes.
+
+> [!IMPORTANT]
+> > [Global Accelerator](#global-accelerator) also performs health checks, which are configured separately but are intentionally kept as similar as possible.
 
 #### Load Balancers
 An [application load balancer](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) (ALB) operates at the application layer of the [OSI model](https://en.wikipedia.org/wiki/OSI_model) to evenly distribute client traffic between one or more healthy targets, VMs in this case, as determined by [target groups](#target-groups).
@@ -501,6 +505,105 @@ Certificates are issued separately for each [region](#datacenters) in each [envi
 <!-- cert table end -->
 
 All domain names used across all systems are listed on each certificate so that if engineering shares resources between systems, such as calling the API or embedding the bridge on the explorer site, it will not violate browser [content security policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) or [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy).
+
+#### Global Accelerator
+[AWS Global Accelerator](https://docs.aws.amazon.com/global-accelerator/latest/dg/what-is-global-accelerator.html) is used to improve the performance and availability of the EOS EVM public endpoints by ingesting client traffic at the nearest [edge location](https://aws.amazon.com/global-accelerator/features), routing it to the closest healthy endpoint over private fiber as priority traffic instead of traversing the public Internet.
+
+Global Accelerator determines where to send client requests according to the following rules.
+1. **Proximity-Based Routing** - route traffic to the [datacenter](#datacenters) nearest to the client in terms of network latency.
+1. **Health-Based Routing** - route traffic to the nearest [healthy](#health-checks) endpoint, providing automatic global [failover](https://en.wikipedia.org/wiki/Failover) in the event of partial service outage.
+
+> [!NOTE]
+> > Global Accelerator is **_not_** a [content delivery network](https://en.wikipedia.org/wiki/Content_delivery_network) (CDN).  
+> > Work is planned to migrate the [bridge](https://github.com/eosnetworkfoundation/eos-evm-contract/issues/444) and the [explorer](https://github.com/eosnetworkfoundation/eos-evm-contract/issues/445) to a CDN.
+
+Amazon [claims](https://aws.amazon.com/global-accelerator/faqs):
+> For TCP traffic, as measured by third-party real user measurement tools at the 90th percentile (p90), Global Accelerator decreases first byte latency by up to 49%, jitter by up to 58%, and improves throughput by up to 60%. [...] "By enabling AWS Global Accelerator, one [...] customer [saw](https://aws.amazon.com/solutions/case-studies/lever-case-study) a 51.2% reduction in mean end-to-end app load times." [[Another](https://aws.amazon.com/solutions/case-studies/skyscanner-case-study) customer] was able to "decrease response time from more than 200 milliseconds to less than 4 milliseconds, a 98% improvement."
+
+> [!TIP]
+> > AWS offers a nifty [website](https://speedtest.globalaccelerator.aws) that enables the user to race requests of various sizes over Global Accelerator against the public Internet to various regions around the world.
+
+Global Accelerator offers some configuration options.
+
+<!-- global accelerator table begin -->
+<table>
+<tr/>
+
+<tr>
+<td rowspan="2" align="center"><b>System</b></td>
+<td colspan="2" align="center"><b>Listener</b></td>
+<td colspan="2" align="center"><b>Target</b></td>
+<td colspan="4" align="center"><b>Health Check</b></td>
+</tr>
+
+<tr>
+<td align="center"><b>Port</b></td>
+<td align="center"><b>Protocol</b></td>
+<td align="center"><b>Load Balancer</b></td>
+<td align="center"><b>Weight</b></td>
+<td align="center"><b>Port</b></td>
+<td align="center"><b>Protocol</b></td>
+<td align="center"><b>Interval</b><br/>(seconds)</td>
+<td align="center"><b>Threshold</b></td>
+</tr>
+
+<!-- API -->
+<tr>
+<td rowspan="2"><b>API</b></td>
+<td rowspan="2" align="right">80<br/>443</td>
+<td rowspan="2" align="center">TCP</td>
+<td align="center"><code>*-ap-api-lb</code></td>
+<td align="center">100</td>
+<td rowspan="2" align="right">8000</td>
+<td rowspan="2" align="center">TCP</td>
+<td rowspan="2" align="center">30</td>
+<td rowspan="2" align="center">3 requests</td>
+</tr>
+
+<tr>
+<td align="center"><code>*-us-api-lb</code></td>
+<td align="center">100</td>
+</tr>
+
+<!-- Bridge -->
+<tr>
+<td rowspan="2"><b>Bridge</b></td>
+<td rowspan="2" align="right">80<br/>443</td>
+<td rowspan="2" align="center">TCP</td>
+<td align="center"><code>*-ap-bridge-lb</code></td>
+<td align="center">100</td>
+<td rowspan="2" align="right">80</td>
+<td rowspan="2" align="center">TCP</td>
+<td rowspan="2" align="center">30</td>
+<td rowspan="2" align="center">3 requests</td>
+</tr>
+
+<tr>
+<td align="center"><code>*-us-bridge-lb</code></td>
+<td align="center">100</td>
+</tr>
+
+<!-- Explorer -->
+<tr>
+<td rowspan="2"><b>Explorer</b></td>
+<td rowspan="2" align="right">80<br/>443</td>
+<td rowspan="2" align="center">TCP</td>
+<td align="center"><code>*-ap-explorer-lb</code></td>
+<td align="center">100</td>
+<td rowspan="2" align="right">80</td>
+<td rowspan="2" align="center">TCP</td>
+<td rowspan="2" align="center">30</td>
+<td rowspan="2" align="center">3 requests</td>
+</tr>
+
+<tr>
+<td align="center"><code>*-us-explorer-lb</code></td>
+<td align="center">100</td>
+</tr>
+</table>
+<!-- global accelerator table end -->
+
+Notice that, unlike load balancer and target group [health checks](#health-checks), the success and failure thresholds are configured together.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

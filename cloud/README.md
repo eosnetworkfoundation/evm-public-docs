@@ -37,6 +37,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [TLS](#tls)
         1. [Certificates](#certificates)
         1. [Global Accelerator](#global-accelerator)
+        1. [Web Application Firewall](#web-application-firewall)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -604,6 +605,12 @@ Global Accelerator offers some configuration options.
 <!-- global accelerator table end -->
 
 Notice that, unlike load balancer and target group [health checks](#health-checks), the success and failure thresholds are configured together.
+
+#### Web Application Firewall
+A [web application firewall](https://docs.aws.amazon.com/waf/latest/developerguide/what-is-aws-waf.html) (WAF) is a managed service that protects web applications by using heuristics to block malicious traffic which could affect availability, compromise security, or consume excessive resources. This can include mitigation for distributed [denial-of-service](https://en.wikipedia.org/wiki/Denial-of-service_attack) (DDoS) attacks, [cross-site scripting](https://en.wikipedia.org/wiki/Cross-site_scripting) (XSS), and [SQL injection](https://en.wikipedia.org/wiki/SQL_injection) attacks. The WAF can be enforced at the [edge](https://en.wikipedia.org/wiki/Edge_computing) or at the [load balancer](#load-balancers).
+
+> [!TIP]
+> > In the AWS WAF web UI, the WAFs are called web application control lists (WACLs).
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

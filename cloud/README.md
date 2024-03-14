@@ -167,6 +167,20 @@ The web applications are all deployed using the exact same components, so the we
 ### Web Application
 The web application documentation will start from the EOS EVM core software and work outwards to the Internet.
 
+Component | Scope
+--- | :---:
+Server | Availability Zone
+Security Group | Datacenter
+Virtual Private Cloud (VPC) | Datacenter
+Target Group | Datacenter
+Health Check | Datacenter
+Load Balancer | Datacenter
+TLS Security Policy | Datacenter
+X.509 Certificate | Datacenter
+Global Accelerator | Global
+Web Application Firewall | Datacenter
+DNS (Route 53) | Global
+
 #### Servers
 The [ENF Engineering team](#ownership) deploys the EOS EVM core software on a set of virtual machines (VMs) using [Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html) instances. The [Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) (RDS) is also used.
 

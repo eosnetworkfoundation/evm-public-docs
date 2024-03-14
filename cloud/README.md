@@ -471,14 +471,14 @@ Certificates are issued separately for each [region](#datacenters) in each [envi
 <td rowspan="2"><b>mainnet</b></td>
 <td align="center"><code>ap</code></td>
 <td align="right"><code>evm.eosnetwork.com</code></td>
-<td align="center">NIST P-384</td>
+<td align="center">ECDSA<br/>NIST P-384</td>
 <td align="right"><code>evm.eosnetwork.com</code><br/><code>api.evm.eosnetwork.com</code><br/><code>bridge.evm.eosnetwork.com</code><br/><code>explorer.evm.eosnetwork.com</code></td>
 </tr>
 
 <tr>
 <td align="center"><code>us</code></td>
 <td align="right"><code>evm.eosnetwork.com</code></td>
-<td align="center">NIST P-384</td>
+<td align="center">ECDSA<br/>NIST P-384</td>
 <td align="right"><code>evm.eosnetwork.com</code><br/><code>api.evm.eosnetwork.com</code><br/><code>bridge.evm.eosnetwork.com</code><br/><code>explorer.evm.eosnetwork.com</code></td>
 </tr>
 
@@ -487,14 +487,14 @@ Certificates are issued separately for each [region](#datacenters) in each [envi
 <td rowspan="2"><b>testnet</b></td>
 <td align="center"><code>ap</code></td>
 <td align="right"><code>testnet.evm.eosnetwork.com</code></td>
-<td align="center">NIST P-384</td>
+<td align="center">ECDSA<br/>NIST P-384</td>
 <td align="right"><code>testnet.evm.eosnetwork.com</code><br/><code>api.testnet.evm.eosnetwork.com</code><br/><code>bridge.testnet.evm.eosnetwork.com</code><br/><code>explorer.testnet.evm.eosnetwork.com</code><br/><code>faucet.testnet.evm.eosnetwork.com</code></td>
 </tr>
 
 <tr>
 <td align="center"><code>us</code></td>
 <td align="right"><code>testnet.evm.eosnetwork.com</code></td>
-<td align="center">NIST P-384</td>
+<td align="center">ECDSA<br/>NIST P-384</td>
 <td align="right"><code>testnet.evm.eosnetwork.com</code><br/><code>api.testnet.evm.eosnetwork.com</code><br/><code>bridge.testnet.evm.eosnetwork.com</code><br/><code>explorer.testnet.evm.eosnetwork.com</code><br/><code>faucet.testnet.evm.eosnetwork.com</code></td>
 </tr>
 </table>

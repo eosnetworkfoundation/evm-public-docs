@@ -35,6 +35,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Health Checks](#health-checks)
         1. [Load Balancers](#load-balancers)
         1. [TLS](#tls)
+        1. [Certificates](#certificates)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -444,6 +445,62 @@ The EOS EVM public endpoints require clients to use [HTTPS](https://en.wikipedia
 </tr>
 </table>
 <!-- tls table end -->
+
+#### Certificates
+The [load balancers](#load-balancers) obtain [X.509 certificates](https://en.wikipedia.org/wiki/X.509) from [AWS Certificate Manager](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html) (ACM). These certificates are issued by [Amazon Trust Services](https://www.amazontrust.com/repository), a public [certificate authority](https://en.wikipedia.org/wiki/Certificate_authority) (CA) operated by Amazon Web Services, and are used by clients to verify the identity of the server.
+
+> [!TIP]
+> > Certificate authorities require proof of ownership over domain names in order to issue a certificate. This is accomplished with ACM by adding a `CNAME` DNS record for each domain name listed on a certificate. ACM will automatically renew the certificate as long as the `CNAME` records are present.
+
+Certificates are issued separately for each [region](#datacenters) in each [environment](#environments).
+
+<!-- cert table begin -->
+<table>
+<tr/>
+
+<tr>
+<td align="center"><b>Chain</b></td>
+<td align="center"><b>Region</b></td>
+<td align="center"><b>Certificate</b></td>
+<td align="center"><b>Algorithm</b></td>
+<td align="center"><b>Alternative Names</b></td>
+</tr>
+
+<!-- mainnet -->
+<tr>
+<td rowspan="2"><b>mainnet</b></td>
+<td align="center"><code>ap</code></td>
+<td align="right"><code>evm.eosnetwork.com</code></td>
+<td align="center">NIST P-384</td>
+<td align="right"><code>evm.eosnetwork.com</code><br/><code>api.evm.eosnetwork.com</code><br/><code>bridge.evm.eosnetwork.com</code><br/><code>explorer.evm.eosnetwork.com</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>us</code></td>
+<td align="right"><code>evm.eosnetwork.com</code></td>
+<td align="center">NIST P-384</td>
+<td align="right"><code>evm.eosnetwork.com</code><br/><code>api.evm.eosnetwork.com</code><br/><code>bridge.evm.eosnetwork.com</code><br/><code>explorer.evm.eosnetwork.com</code></td>
+</tr>
+
+<!-- testnet -->
+<tr>
+<td rowspan="2"><b>testnet</b></td>
+<td align="center"><code>ap</code></td>
+<td align="right"><code>testnet.evm.eosnetwork.com</code></td>
+<td align="center">NIST P-384</td>
+<td align="right"><code>testnet.evm.eosnetwork.com</code><br/><code>api.testnet.evm.eosnetwork.com</code><br/><code>bridge.testnet.evm.eosnetwork.com</code><br/><code>explorer.testnet.evm.eosnetwork.com</code><br/><code>faucet.testnet.evm.eosnetwork.com</code></td>
+</tr>
+
+<tr>
+<td align="center"><code>us</code></td>
+<td align="right"><code>testnet.evm.eosnetwork.com</code></td>
+<td align="center">NIST P-384</td>
+<td align="right"><code>testnet.evm.eosnetwork.com</code><br/><code>api.testnet.evm.eosnetwork.com</code><br/><code>bridge.testnet.evm.eosnetwork.com</code><br/><code>explorer.testnet.evm.eosnetwork.com</code><br/><code>faucet.testnet.evm.eosnetwork.com</code></td>
+</tr>
+</table>
+<!-- cert table end -->
+
+All domain names used across all systems are listed on each certificate so that if engineering shares resources between systems, such as calling the API or embedding the bridge on the explorer site, it will not violate browser [content security policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP) or [same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy).
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

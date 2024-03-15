@@ -41,6 +41,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
     1. [DNS](#dns)
     1. [Faucet](#faucet)
     1. [Metrics](#metrics)
+        1. [Alarms](#alarms)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -647,6 +648,78 @@ The EOS EVM public endpoints use [Amazon CloudWatch](https://docs.aws.amazon.com
 > > Metrics are not currently exported to any platform-agnostic systems such as [Prometheus](https://prometheus.io) and [Grafana](https://grafana.com), but this was originally on the roadmap and will be done as the need arises.
 
 Cost analysis is performed using the [AWS Cost Explorer](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-explorer.html) tool, which can be filtered by the [tags](#tags) described above.
+
+#### Alarms
+CloudWatch alarms are used to notify stakeholders when specific metrics cross specific thresholds.
+
+<!-- alarm table begin -->
+<table>
+<tr/>
+<tr>
+<td align="center"><b>Chain</b></td>
+<td align="center"><b>System</b></td>
+<td align="center"><b>DC</b></td>
+<td align="center"><b>Alarm</b></td>
+<td align="center"><b>Fault Condition</b></td>
+</tr>
+
+<!-- mainnet -->
+<tr>
+<td rowspan="4"><b>mainnet</b></td>
+<td rowspan="2"><b>API</b></td>
+<td align="center"><code>ap</code></td>
+<td><code>evm-mainnet-ap-api-tg_sick-hosts</code></td>
+<td><code>UnHealthyHostCount</code> ≥ 1 for 1 datapoint(s) within 1 minute.</td>
+</tr>
+
+<tr>
+<td rowspan="3" align="center"><code>us</code></td>
+<td><code>evm-mainnet-us-api-tg_sick-hosts</code></td>
+<td><code>UnHealthyHostCount</code> ≥ 1 for 1 datapoint(s) within 1 minute.</td>
+</tr>
+
+<tr>
+<td><b>Bridge</b></td>
+<td><code>evm-mainnet-us-bridge-tg_sick-hosts</code></td>
+<td><code>UnHealthyHostCount</code> ≥ 1 for 1 datapoint(s) within 1 minute.</td>
+</tr>
+
+<tr>
+<td><b>Explorer</b></td>
+<td width="450"><code>evm-mainnet-us-explorer-tg_sick-hosts</code></td>
+<td><code>UnHealthyHostCount</code> ≥ 1 for 1 datapoint(s) within 1 minute.</td>
+</tr>
+
+<!-- testnet -->
+<tr>
+<td rowspan="4"><b>testnet</b></td>
+<td rowspan="2"><b>API</b></td>
+<td align="center"><code>ap</code></td>
+<td><code>evm-testnet-ap-api-tg_sick-hosts</code></td>
+<td><code>UnHealthyHostCount</code> ≥ 1 for 1 datapoint(s) within 1 minute.</td>
+</tr>
+
+<tr>
+<td rowspan="3" align="center"><code>us</code></td>
+<td><code>evm-testnet-us-api-tg_sick-hosts</code></td>
+<td><code>UnHealthyHostCount</code> ≥ 1 for 1 datapoint(s) within 1 minute.</td>
+</tr>
+
+<tr>
+<td><b>Bridge</b></td>
+<td><code>evm-testnet-us-bridge-tg_sick-hosts</code></td>
+<td><code>UnHealthyHostCount</code> ≥ 1 for 1 datapoint(s) within 1 minute.</td>
+</tr>
+
+<tr>
+<td><b>Explorer</b></td>
+<td><code>evm-testnet-us-explorer-tg_sick-hosts</code></td>
+<td><code>UnHealthyHostCount</code> ≥ 1 for 1 datapoint(s) within 1 minute.</td>
+</tr>
+</table>
+<!-- alarm table end -->
+
+All alarms defined in CloudWatch are automatically "seen" and handled by the notification system.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

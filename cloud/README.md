@@ -39,6 +39,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Global Accelerator](#global-accelerator)
         1. [Web Application Firewall](#web-application-firewall)
     1. [DNS](#dns)
+    1. [Faucet](#faucet)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -633,6 +634,9 @@ The [domain name service](https://en.wikipedia.org/wiki/Domain_Name_System) (DNS
 Control over `evm.eosnetwork.com` and all subdomains is delegated to the `evm-mainnet` AWS account by an external system. This account contains all DNS records for the mainnet endpoints along with records for [certificate](#certificates) validation.
 
 The `evm-mainnet` account delegates control over `testnet.evm.eosnetwork.com` and all subdomains to the `evm-testnet` AWS account, which contains all DNS records for the testnet endpoints and certificate validation.
+
+### Faucet
+The EOS EVM testnet faucet is operated by [EOS Nation](https://eosnation.io) and is hosted on their cloud infrastructure. As such, the only responsibility of the `evm-testnet` AWS account is to provide [DNS records](#dns) for the faucet.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

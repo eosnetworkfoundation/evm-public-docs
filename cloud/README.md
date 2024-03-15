@@ -40,6 +40,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Web Application Firewall](#web-application-firewall)
     1. [DNS](#dns)
     1. [Faucet](#faucet)
+    1. [Metrics](#metrics)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -182,6 +183,7 @@ X.509 Certificate | Datacenter
 Global Accelerator | Global
 Web Application Firewall | Datacenter
 DNS (Route 53) | Global
+Metrics (CloudWatch) | Datacenter
 
 #### Servers
 The [ENF Engineering team](#ownership) deploys the EOS EVM core software on a set of virtual machines (VMs) using [Amazon EC2](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html) instances. The [Amazon Relational Database Service](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Welcome.html) (RDS) is also used.
@@ -637,6 +639,14 @@ The `evm-mainnet` account delegates control over `testnet.evm.eosnetwork.com` an
 
 ### Faucet
 The EOS EVM testnet faucet is operated by [EOS Nation](https://eosnation.io) and is hosted on their cloud infrastructure. As such, the only responsibility of the `evm-testnet` AWS account is to provide [DNS records](#dns) for the faucet.
+
+### Metrics
+The EOS EVM public endpoints use [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) for metrics, dashboards, and alarms. CloudWatch is an AWS-managed service with built-in integrations to all of the other managed services used by the public endpoints, so a large number of metrics are vacuumed up by default. This includes metrics on health checks, server resource utilization, endpoint traffic analysis, the nature of malicious traffic blocked by the [web application firewall](#web-application-firewall), and more. System and application logs can be ingested and analyzed for an additional fee.
+
+> [!TIP]
+> > Metrics are not currently exported to any platform-agnostic systems such as [Prometheus](https://prometheus.io) and [Grafana](https://grafana.com), but this was originally on the roadmap and will be done as the need arises.
+
+Cost analysis is performed using the [AWS Cost Explorer](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-explorer.html) tool, which can be filtered by the [tags](#tags) described above.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

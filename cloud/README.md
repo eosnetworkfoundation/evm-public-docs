@@ -38,6 +38,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
         1. [Certificates](#certificates)
         1. [Global Accelerator](#global-accelerator)
         1. [Web Application Firewall](#web-application-firewall)
+    1. [DNS](#dns)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -625,6 +626,13 @@ A [web application firewall](https://docs.aws.amazon.com/waf/latest/developergui
 
 > [!TIP]
 > > In the AWS WAF web UI, the WAFs are called web application control lists (WACLs).
+
+### DNS
+The [domain name service](https://en.wikipedia.org/wiki/Domain_Name_System) (DNS) is a distributed system that translates human-readable domain names into IP addresses. The EOS EVM public endpoints use [Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html) to manage DNS records.
+
+Control over `evm.eosnetwork.com` and all subdomains is delegated to the `evm-mainnet` AWS account by an external system. This account contains all DNS records for the mainnet endpoints along with records for [certificate](#certificates) validation.
+
+The `evm-mainnet` account delegates control over `testnet.evm.eosnetwork.com` and all subdomains to the `evm-testnet` AWS account, which contains all DNS records for the testnet endpoints and certificate validation.
 
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.

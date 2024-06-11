@@ -42,6 +42,7 @@ EOS EVM public endpoint cloud infrastructure documentation.
     1. [Faucet](#faucet)
     1. [Metrics](#metrics)
         1. [Alarms](#alarms)
+    1. [Notifications](#notifications)
 1. [Deployment Strategy](#deployment-strategy)
 1. [See Also](#see-also)
 
@@ -721,6 +722,94 @@ CloudWatch alarms are used to notify stakeholders when specific metrics cross sp
 
 All alarms defined in CloudWatch are automatically "seen" and handled by the notification system.
 
+### Notifications
+The EOS EVM public endpoint cloud infrastructure can automatically notify stakeholders about system health or security events using any combination of email, instant messaging (IM), and [SMS](https://en.wikipedia.org/wiki/SMS).
+
+[CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html) automatically ingests metrics from all AWS managed services used by the public endpoints. These metrics can be used to define alarms. All [alarms](#alarms) defined in CloudWatch are automatically "seen" and handled by the notification system.
+
+This system ingests Cloudwatch alarm state-change events using [Amazon EventBridge](https://docs.aws.amazon.com/eventbridge/latest/userguide/what-is-amazon-eventbridge.html) to put them in a [Simple Notification Service](https://docs.aws.amazon.com/sns/latest/dg/welcome.html) (SNS) "topic," like a queue. Each event contains a JSON payload with information about the alarm and the context of the state change. The [aws-cloudwatch-alarm-handler](https://github.com/eosnetworkfoundation/aws-cloudwatch-alarm-handler) is an [Amazon Lambda](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html) subscribed to this topic that takes the machine-readable event information, generates a human-readable message about the alarm, then puts this message in a second SNS topic called `notify-evm`. This topic uses AWS-provided services to send the human-readable message out via email and SMS. Finally, the [telegram-bot](https://github.com/eosnetworkfoundation/telegram-bot) lambda is subscribed to the `notify-evm` topic and sends the message to stakeholders via instant messaging (IM).
+
+```mermaid
+---
+title: Notification System
+---
+flowchart TB
+    subgraph cw["`**CloudWatch**`"]
+        direction LR
+        metric["📊 Metric"]
+        alarm["🚨 Alarm"]
+        metric -.- alarm
+    end
+
+    alarm ---> |📈<br/>alarm state-change event| eventBus
+
+    subgraph eb["`**EventBridge**`"]
+        direction LR
+        eventBus["🚏 Event Bus<br/><br/><code>default</code>"]
+        rule["📜 Rule"]
+        eventBus -.- rule
+    end
+
+    eventBus ---> |📨| topic1
+    rule -.-x |source| cw
+    rule -.-x |target| topic1
+
+    subgraph sns1["`**SNS**`"]
+        direction TB
+        topic1["🟡 Topic<br/><br/>cloudwatch-alarm-state-change-event"]
+        subscription1["🗞️ Subscription"]
+        topic1 -.- subscription1
+    end
+
+    topic1 ---> |💽<br/>machine-readable event| function1
+    subscription1 -.-> function1
+
+    subgraph lambda1["`**Lambda**`"]
+        direction TB
+        function1["📖 Function<br/><br/><code>aws-cloudwatch-alarm-handler</code>"]
+        config1["Config"]
+        function1 -.- config1
+    end
+
+    function1 ---> |📄<br/>formatted text| topic2
+
+    subgraph sns2["`**SNS**`"]
+        direction TB
+        topic2["🟪 Topic<br/><br/>notify-evm"]
+        subscription2["🗞️ Subscription"]
+        topic2 -.- subscription2
+    end
+
+    topic2 ---> |📄| function2
+    topic2 ---> |📧| email
+    topic2 ---> |📶| sms
+    subscription2 -.-> function2
+
+    subgraph lambda2["`**Lambda**`"]
+        direction TB
+        function2["🤖 Function<br/><br/><code>telegram-bot</code>"]
+        config2["Config"]
+        function2 -.- config2
+    end
+
+    function2 ---> |💬| im
+
+    subgraph stakeholders["`**Stakeholders**`"]
+        direction TB
+        email["📥 Email"]
+        sms["📲 SMS"]
+        im["💻 IM"]
+    end
+
+    email -.-> |👤| subscription2
+    sms -.-> |👤| subscription2
+    im -.-> |🗝️👤| config2
+
+    alarm ~~~ rule
+```
+
+For more information about the notification system components, including examples of the JSON payload and human-readable messages, check out the [aws-cloudwatch-alarm-handler](https://github.com/eosnetworkfoundation/aws-cloudwatch-alarm-handler) and [telegram-bot](https://github.com/eosnetworkfoundation/telegram-bot) GitHub repositories.
+
 ## Deployment Strategy
 Infrastructure changes are **always** deployed, _one at a time_, as follows.
 1. A maintenance window is scheduled with stakeholders, during which no other changes are taking place.
@@ -745,8 +834,10 @@ If service degradation is observed at any point in this process then all changes
 ## See Also
 More resources.
 - [`../README.md`](../README.md) ⤴
+- [aws-cloudwatch-alarm-handler](https://github.com/eosnetworkfoundation/aws-cloudwatch-alarm-handler) lambda
 - [eos-evm-internal](https://github.com/eosnetworkfoundation/eos-evm-internal) - internal-facing documentation of a [sensitive](https://github.com/eosnetworkfoundation/engineering/blob/main/standards/secrets.md) nature.
 - [Runbooks](../runbooks/README.md)
+- [telegram-bot](https://github.com/eosnetworkfoundation/telegram-bot) lambda
 
 ***
 > **_Legal Notice_**  

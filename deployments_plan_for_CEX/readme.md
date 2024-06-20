@@ -2,6 +2,18 @@
 
 This document will describes the minimum requirements to deploy and support EOS EVM Network for Centralized Cryptocurrency Exchanges.
 
+<!-- contents box begin -->
+<table>
+<tr/>
+<tr>
+<td>
+<p/>
+<div align="center">
+<b>Contents</b>
+</div>
+<p/>
+<!-- contents markdown begin -->
+
 1. [Minimum Architecture](#MA)
 2. [Building necessary components](#BNC)
 3. [Running the EOS (leap) nodes with state_history_plugin](#REN)
@@ -13,6 +25,12 @@ This document will describes the minimum requirements to deploy and support EOS 
 9. [Replay the EVM chain for major version upgrades](#REPLAY)
 10. [Known Limitations](#KL)
 
+<!-- contents markdown end -->
+<p/>
+</td>
+</tr>
+</table>
+<!-- contents box end -->
 
 <a name="MA"></a>
 ## Minimum Architecture 

@@ -1,12 +1,30 @@
 # Endpoint Smoke Test
 This documents the process to validate a given EOS-EVM network endpoint is online, functional, and qualified to receive public traffic.
 
-### Index
+<!-- contents box begin -->
+<table>
+<tr/>
+<tr>
+<td width="225">
+<p/>
+<div align="center">
+<b>Contents</b>
+</div>
+<p/>
+<!-- contents markdown begin -->
+
 1. [Bridge](#bridge)
 1. [Explorer](#explorer)
 1. [Faucet](#faucet)
 1. [RPC API](#rpc-api)
 1. [See Also](#see-also)
+
+<!-- contents markdown end -->
+<p/>
+</td>
+</tr>
+</table>
+<!-- contents box end -->
 
 ## Bridge
 Smoke tests for the bridge.

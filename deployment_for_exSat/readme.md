@@ -140,12 +140,12 @@ sudo chmod a+rwx /mnt/d
 ### download a proper snapshot
 
 - For the first time: You need a snapshot file whose timestamp is before the exsat EVM genesis timestamp 2024-10-09T07:54:41 UTC. You can download the snapshot from any public antelope snapshot service providers (such as https://snapshots.eosnation.io/), or use your own snapshot.
-- The block log and state history log need to be replayed from the snapshot time and need to be saved together in the backup VM periodically.
+
 - You need to keep the block logs, state-history logs starting from the snapshot point. This is because eos-evm-node may ask for old blocks for replaying the EVM chain. 
 
 ### prepare the config
 
-example data-dir/config.ini for VM1
+example data-dir/config.ini for native chain node
 
 ```
 # 180GB chain-base size, using swap & tmpfs
@@ -278,7 +278,7 @@ clone the https://github.com/eosnetworkfoundation/eos-evm-miner repo
   ```
 - powerup the miner account with enough CPU & NET resource (for example: 1min CPU. 10 MB net per day). You can use some existing auto powerup service such as https://eospowerup.io/auto or push the powerup transaction (eosio::powerup) via cleos.
 
-- prepare the .env file with the correct information (replace with your own miner account & private_key, set RPC_ENDPOINTS to VM1 IP)
+- prepare the .env file with the correct information (replace with your own miner account & private_key, set RPC_ENDPOINTS to native chain VM IP)
 ```
 PRIVATE_KEY=5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
 MINER_ACCOUNT=a123

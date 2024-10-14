@@ -18,10 +18,10 @@ This document will describes the minimum requirements to deploy and support exSa
 2. [Building necessary components](#BNC)<br/>
 3. [Running the spring node(native chain) with state_history_plugin](#REN)<br/>
 4. [Running the eos-evm-node & eos-evm-rpc](#REE)<br/>
-5. [Backup & Recovery of spring & eos-evm-node](#BR)<br/>
-6. [Running the eos-evm-miner service](#RMS)<br/>
-7. [[Optional]: Setting up the read-write proxy](#RWP)<br/>
-7a. [[Optional]: An alternative way to the read-write proxy](#RWP2)<br/>
+5. [Running the eos-evm-miner service](#RMS)<br/>
+6. [[Optional]: Setting up the read-write proxy](#RWP)<br/>
+6a. [[Optional]: An alternative way to the read-write proxy](#RWP2)<br/>
+7. [Backup & Recovery of spring & eos-evm-node](#BR)<br/>
 8. [[Emergency Only]: Replay the EVM chain for major version upgrades](#REPLAY)<br/>
 9. [Known Limitations](#KL)<br/>
 
@@ -37,43 +37,36 @@ This document will describes the minimum requirements to deploy and support exSa
 This is the minimum setup to run an exSat EVM service. It does not contain the high availability setup. Exchanges can duplicate the real-time service part for high availability purpose if necessary. 
 ```
 Real-time service:
-                                                +-- VM2 (exSat EVM Chain)-------+
-    +--VM1 (native EOS chain) -----------+      | eos-evm-node (main process of |
-    | spring node (main process of EOS   | <--- | exSat EVM chain), eos-evm-rpc | <-- eth compatible read requests (e.g. eth_getBlockByNumber, eth_call ...)
-    | native chain)                      |      +-------------------------------+
-    +------------------------------------+                                    \      + ---- VM2 ------------------------------------------+
-                    ^                                                          <---- | proxy to separate read & write requests (optional) |
-                    |                                                         /      + ---------------------------------------------------+
-                    |                                                        /
-                    |                           +-- VM2 (exSat EVM Chain) --+
-                    \-- push EOS transactions --| eos-evm-miner (tx wrapper)| <-- eth_gasPrice / eth_sendRawTransaction
-                                                +---------------------------+
-												
-
-Periodic Backup service (not mandatory at the beginning, but highly recommended to have) : 
-    +--VM3 (native + exSat chain ) --------------+        +--VM3 (native + exSat chain )--+
-    | spring node (running in irreversible mode) | <----- | eos-evm-node & eos-evm-rpc    | 
-    +--------------------------------------------+        +-------------------------------+         
+                                      +------ exSat EVM Chain VM -----+
++------ native chain VM -------+      | eos-evm-node (main process of |
+| spring node (main process of | <--- | exSat EVM chain), eos-evm-rpc | <-- eth compatible read requests (e.g. eth_getBlockByNumber, eth_call ...)
+| the native chain)            |      +-------------------------------+
++------------------------------+                                    \      + ----- exSat EVM Chain VM---------------------------+
+                ^                                                    <---- | proxy to separate read & write requests (optional) |
+                |                                                   /      + ---------------------------------------------------+
+                |                                                  /
+                |                              +--- exSat EVM Chain VM ----+
+                \-- push native transactions --| eos-evm-miner (tx wrapper)| <-- eth_gasPrice / eth_sendRawTransaction
+                                               +---------------------------+												        
 ```
 
-<b>spring node</b>: stands for the native EOS (Level 1) blockchain.<br/>
+<b>spring node</b>: stands for the native (Level 1) blockchain.<br/>
 <b>eos-evm-node</b>: the main process for the exSat EVM (Level 2) blockchain.<br/>
 <b>eos-evm-rpc</b>: a separate process that talks to eos-evm-node in the same VM, providing read-only ETH APIs (such as eth_getBlockByNumber, eth_call, eth_blockNumber, ... ) that are compatible with standard ETH API. <br/>
-<b>eos-evm-miner</b>: process that handles eth_sendRawTransaction and eth_gasPrice, wrapping ETH transactions into antelope(EOS) transactions.<br/>
+<b>eos-evm-miner</b>: process that handles eth_sendRawTransaction and eth_gasPrice, wrapping ETH transactions into native transactions.<br/>
 <b>proxy</b>: [Optional] Proxy to separate read requests and write requests, providing the same ETH compatible endpoint to clients.
 
 Hardware requirements:
 
-- VM1: RAM minimum 32GB (64GB+ recommended). SSD 750GB+ (may grow as native chain data grows). 
-- VM2: RAM minimum 16GB (32GB+ recommended). SSD 250GB+ (may grow as exSat chain data grows)
-- VM3: RAM minimum 32GB (64GB+ recommended). SSD 1TB+ (may grow as either native or exSat chain data grows)
+- native chain VM:    RAM minimum 32GB (64GB+ recommended). SSD 750GB+ (may grow as native chain data grows). 
+- exSat EVM Chain VM: RAM minimum 16GB (32GB+ recommended). SSD 250GB+ (may grow as exSat chain data grows)
 
 
 <a name="BNC"></a>
 ## Building necessary components:
 OS: Recommend to use ubuntu 22.04
 
-- EOS (spring) Node: the main process for native EOS chain
+- Native (spring) Node: the main process for native chain
 please refer to https://github.com/AntelopeIO/spring
 The latest pre-built stable version can be downloaded from https://github.com/AntelopeIO/spring/releases
 
@@ -90,14 +83,14 @@ mkdir build; cd build;
 cmake .. && make -j8
 ```
 
-- Eos-evm-miner: please refer to https://github.com/eosnetworkfoundation/eos-evm-miner
+- eos-evm-miner: please refer to https://github.com/eosnetworkfoundation/eos-evm-miner
 
 - Proxy to separate read requests & write requests: please refer to https://github.com/eosnetworkfoundation/eos-evm-node/tree/main/peripherals/proxy
 
 <a name="REN"></a>
-## Running the EOS (spring) node
+## Running the L1 native (spring) node
 
-### create a 256GB swap and 240GB tmpfs system to hold the EOS blockchain state
+### create a 256GB swap and 240GB tmpfs system to hold the native blockchain state
 
 example script:
 ```
@@ -146,7 +139,7 @@ sudo chmod a+rwx /mnt/d
 
 ### download a proper snapshot
 
-- For the first time: You need a snapshot file whose timestamp is before the exsat EVM genesis timestamp 2024-10-09T07:54:41 UTC. You can download the snapshot from any public EOS snapshot service providers (such as https://snapshots.eosnation.io/), or use your own snapshot.
+- For the first time: You need a snapshot file whose timestamp is before the exsat EVM genesis timestamp 2024-10-09T07:54:41 UTC. You can download the snapshot from any public antelope snapshot service providers (such as https://snapshots.eosnation.io/), or use your own snapshot.
 - The block log and state history log need to be replayed from the snapshot time and need to be saved together in the backup VM periodically.
 - You need to keep the block logs, state-history logs starting from the snapshot point. This is because eos-evm-node may ask for old blocks for replaying the EVM chain. 
 
@@ -188,17 +181,15 @@ plugin = eosio::net_plugin
 plugin = eosio::net_api_plugin
 plugin = eosio::db_size_api_plugin
 ```
-add `read-mode = irreversible` to backup EOS node (VM3) to run as irreversible mode.
 
+### Run the native node process
 
-### Run the EOS node process
-
-For the 1st time, we need to run the EOS node with an initial snapshot:
+For the 1st time, we need to run the spring node with an initial snapshot:
 ```
 ./nodeos --p2p-accept-transactions=0 --state-dir=/mnt/d --data-dir=./data-dir --config-dir=./data-dir --http-max-response-time-ms=1000 --disable-replay-opts --max-body-size=10000000 --snapshot=SNAPSHOT_FILE
 ```
 
-After that, any restart of the EOS node will not need the snapshot argument:
+After that, any restart of the spring node will not need the snapshot argument:
 ```
 ./nodeos --p2p-accept-transactions=0 --state-dir=/mnt/d --data-dir=./data-dir --config-dir=./data-dir --http-max-response-time-ms=1000 --disable-replay-opts --max-body-size=10000000
 ```
@@ -272,35 +263,15 @@ curl --location --request POST '127.0.0.1:8881/' --header 'Content-Type: applica
 ```
 - if either spring or eos-evm-node can't start, follow the recovery process in the next session.
 
-<a name="BR"></a>
-## Backup & Recovery of spring & eos-evm-node
-- It is quite important for node operator to backup all the state periodically (for example, once per day).
-- backup must be done on the spring node running in irreversible mode. And because of such, all the blocks in eos-evm-node has been finialized and it will never has a fork.
-- create the nodeos (spring) snapshot:
-  ```
-  curl http://127.0.0.1:8888/v1/producer/create_snapshot
-  ```
-- gracefull kill all processes:
-```
-pkill eos-evm-node
-sleep 2.0
-pkill eos-evm-rpc
-sleep 2.0
-pkill nodeos
-```
-- backup spring's data-dir folder and eos-evm-node's chain-data
-- restart back nodeos, eos-evm-node & eos-evm-rpc
-- for spring recovery, please restore the data-dir folder of the last backup and use the spring's snapshot
-- for eos-evm-node recovery, please restore the chain-data folder of the last backup.
 
 <a name="RMS"></a>
 ## Running the eos-evm-miner service 
-The miner service will help to package the EVM transaction into EOS transaction and set to the EOS network. It will provide the following 2 eth API:
-- eth_gasPrice: retrieve the currect gas price from EOS Network
-- eth_sendRawTransaction: package the ETH transaction into EOS transaction and push into the EOS Network.
+The miner service will help to package the EVM transaction into native transaction and set to the native network. It will provide the following 2 eth API:
+- eth_gasPrice: retrieve the currect gas price from native Network
+- eth_sendRawTransaction: package the exSat ETH transaction into native transaction and push into the native Network.
 clone the https://github.com/eosnetworkfoundation/eos-evm-miner repo
 
-- create your miner account (for example: a123) on EOS Network
+- create your miner account (for example: a123) on native Network
 - open account balance on EVM side:
   ```
   ./cleos push action evm.xsat open '{"owner":"a123"}' -p a123
@@ -481,6 +452,40 @@ finally:
     exit(0)
 ```
 
+<a name="BR"></a>
+## Backup & Recovery of spring & eos-evm-node
+The Backup & Recovery is not a must at the beginning, as you can always setup everything from scratch. However, in the middle to long term, 
+it is quite important for node operator to backup all the state periodically.
+
+A backup must be done on the spring node running in irreversible mode. And because of such, all the blocks in eos-evm-node has been finialized and it will never has a fork.
+
+```
+Periodic Backup service (not mandatory at the beginning, but highly recommended to have) : 
+    +----------------- Backup VM ----------------+        +-------- Back up VM -----------+
+    | spring node (running in irreversible mode) | <----- | eos-evm-node & eos-evm-rpc    | 
+    +--------------------------------------------+        +-------------------------------+         
+```
+<b>Backup VM</b>: RAM minimum 32GB (64GB+ recommended). SSD 1TB+ (may grow as either native or exSat chain data grows)
+<b>spring node for backup config</b>: add `read-mode = irreversible` to backup spring node to run as irreversible mode.
+
+<b>Backup steps</b>:
+- create the nodeos (spring) snapshot:
+  ```
+  curl http://127.0.0.1:8888/v1/producer/create_snapshot
+  ```
+- gracefull kill all processes:
+```
+pkill eos-evm-node
+sleep 2.0
+pkill eos-evm-rpc
+sleep 2.0
+pkill nodeos
+```
+- backup spring's data-dir folder and eos-evm-node's chain-data
+- restart back nodeos, eos-evm-node & eos-evm-rpc
+- for spring recovery, please restore the data-dir folder of the last successful backup and use the last successful spring's snapshot to start with.
+- for eos-evm-node recovery, please restore the chain-data folder of the last successful backup.
+
 
 <a name="REPLAY"></a>
 ## [Emergency only] Replay the EVM chain for major version upgrades
@@ -503,6 +508,6 @@ curl --location --request POST '127.0.0.1:8881/' --header 'Content-Type: applica
 ## Known Limitations
 - Eos-evm-node will gracefully stop if the state-history-plugin connection in Spring node is dropped. Node operators need to have auto-restart script to restart eos-evm-node (and choose the available spring end-point if high availability setup exist)
 
-- In some rare case, eos-evm-node can not handle forks happened in Native EOS (L1) chain. Node operators may need to run the recovery process.
+- In some rare case, eos-evm-node can not handle forks happened in native chain. Node operators may need to run the recovery process.
 
 - If eos-evm-node crashes, in some case it may not able to start due to database error. Node operators may need to run the recovery process.

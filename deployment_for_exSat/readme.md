@@ -16,12 +16,12 @@ This document will describes the minimum requirements to deploy and support exSa
 
 1. [Minimum Architecture](#MA)<br/>
 2. [Building necessary components](#BNC)<br/>
-3. [Running the spring node(native chain) with state_history_plugin](#REN)<br/>
-4. [Running the eos-evm-node & eos-evm-rpc](#REE)<br/>
-5. [Running the eos-evm-miner service](#RMS)<br/>
+3. [Running the native chain node](#REN)<br/>
+4. [Running the exSat EVM chain node and rpc service](#REE)<br/>
+5. [Running the exSat EVM miner service](#RMS)<br/>
 6. [[Optional]: Setting up the read-write proxy](#RWP)<br/>
 6a. [[Optional]: An alternative way to the read-write proxy](#RWP2)<br/>
-7. [Backup & Recovery of spring & eos-evm-node](#BR)<br/>
+7. [Backup & Recovery of native node & exSat EVM node](#BR)<br/>
 8. [[Emergency Only]: Replay the EVM chain for major version upgrades](#REPLAY)<br/>
 9. [Known Limitations](#KL)<br/>
 
@@ -88,7 +88,7 @@ cmake .. && make -j8
 - Proxy to separate read requests & write requests: please refer to https://github.com/eosnetworkfoundation/eos-evm-node/tree/main/peripherals/proxy
 
 <a name="REN"></a>
-## Running the L1 native (spring) node
+## Running the native chain node
 
 ### create a 256GB swap and 240GB tmpfs system to hold the native blockchain state
 
@@ -239,19 +239,19 @@ curl http://127.0.0.1:8888/v1/db_size/get 2>/dev/null | jq
 
 
 <a name="REE"></a>
-## Running the eos-evm-node & eos-evm-rpc
+## Running the exSat EVM chain node and rpc service
 
 - Make the genesis.json file for exSat EVM chain as follows:
 `
 { "alloc": { "0x0000000000000000000000000000000000000000": { "balance": "0x0000000000000000000000000000000000000000000000000000000000000000" } }, "coinbase": "0x0000000000000000000000000000000000000000", "config": { "chainId": 7200, "homesteadBlock": 0, "eip150Block": 0, "eip155Block": 0, "byzantiumBlock": 0, "constantinopleBlock": 0, "petersburgBlock": 0, "istanbulBlock": 0, "trust": {} }, "difficulty": "0x01", "extraData": "exSatEVM", "gasLimit": "0x7ffffffffff", "mixHash": "0x17bfe8ef72abc24e9729bd3037843c7ce1c8022eae521e20e6a744964d1be111", "nonce": "0x56e40ee0d9000000", "timestamp": "0x670636c1" }
 `
 
-- run the eos-evm-node
+- run the exSat EVM chain node
 ```
 mkdir ./chain-data
 ./eos-evm-node --ship-endpoint=<NODEOS_IP_ADDRESS>:8999 --ship-core-account evm.xsat --chain-data ./chain-data --plugin block_conversion_plugin --plugin blockchain_plugin --nocolor 1  --verbosity=4 --genesis-json=./genesis.json
 ```
-- run the eos-evm-rpc (must be in the same VM as eos-evm-node)
+- run the exSat EVM rpc services (must be in the same VM of exSat EVM chain node)
 ```
 ./eos-evm-rpc --api-spec=eth,debug,net,trace --http-port=0.0.0.0:8881 --eos-evm-node=127.0.0.1:8080 --chaindata=./chain-data
 ```
@@ -265,13 +265,13 @@ curl --location --request POST '127.0.0.1:8881/' --header 'Content-Type: applica
 
 
 <a name="RMS"></a>
-## Running the eos-evm-miner service 
+## Running the exSat EVM miner service 
 The miner service will help to package the EVM transaction into native transaction and set to the native network. It will provide the following 2 eth API:
 - eth_gasPrice: retrieve the currect gas price from native Network
 - eth_sendRawTransaction: package the exSat ETH transaction into native transaction and push into the native Network.
 clone the https://github.com/eosnetworkfoundation/eos-evm-miner repo
 
-- create your miner account (for example: a123) on native Network
+- create your miner account (in this document we use account `a123` as an example) on the native network
 - open account balance on EVM side:
   ```
   ./cleos push action evm.xsat open '{"owner":"a123"}' -p a123
@@ -453,7 +453,7 @@ finally:
 ```
 
 <a name="BR"></a>
-## Backup & Recovery of spring & eos-evm-node
+## Backup & Recovery of native node & exSat EVM node
 The Backup & Recovery is not a must at the beginning, as you can always setup everything from scratch. However, in the middle to long term, 
 it is quite important for node operator to backup all the state periodically.
 

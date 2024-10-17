@@ -249,19 +249,99 @@ curl http://127.0.0.1:8888/v1/db_size/get 2>/dev/null | jq
 - run the exSat EVM chain node
 ```
 mkdir ./chain-data
-./eos-evm-node --ship-endpoint=<NODEOS_IP_ADDRESS>:8999 --ship-core-account evm.xsat --chain-data ./chain-data --plugin block_conversion_plugin --plugin blockchain_plugin --nocolor 1  --verbosity=4 --genesis-json=./genesis.json
+./eos-evm-node --ship-endpoint=<Native chain state-history-endpoint IP:PORT> --ship-core-account evm.xsat --chain-data ./chain-data --plugin block_conversion_plugin --plugin blockchain_plugin --nocolor 1  --verbosity=4 --genesis-json=./genesis.json
 ```
+you should able to see the outputs similar as following:
+```
+  INFO [10-16|09:49:52.745 UTC] Created DB environment at location : ./chain-data/chaindata
+  INFO [10-16|09:49:52.745 UTC] Created Ethereum Backend with network id <7'200>
+  INFO [10-16|09:49:52.745 UTC] BackEndKvServer created listening on: 127.0.0.1:8080
+  INFO [10-16|09:49:52.745 UTC] Initializing Engine Plugin
+  INFO [10-16|09:49:52.745 UTC] Initialized SHiP Receiver Plugin
+  INFO [10-16|09:49:52.745 UTC] Determining effective canonical header.
+  INFO [10-16|09:49:52.745 UTC] Stored LIB at: #10'000
+  INFO [10-16|09:49:52.745 UTC] Search for block containing a valid eos id. Start from:#10'000
+  INFO [10-16|09:49:52.745 UTC] load_head: #10'000, txs:0, hash:2ecef7788e3bbf8099d559c2a6cf9069bdb21c0c6d106a2817700096392c3a65
+  INFO [10-16|09:49:52.745 UTC] Loaded native block: [10'000][398'472'974],[1'728'470'481'000'000]
+  INFO [10-16|09:49:52.745 UTC] Block interval (in seconds): 1
+  INFO [10-16|09:49:52.745 UTC] Genesis timestamp (in seconds since Unix epoch): 1'728'460'481
+  INFO [10-16|09:49:52.745 UTC] Genesis nonce (as hex): 0x56e40ee0d9000000
+  INFO [10-16|09:49:52.745 UTC] Genesis nonce (as Antelope name): evm.xsat
+  INFO [10-16|09:49:52.745 UTC] Initialized block_conversion Plugin
+  INFO [10-16|09:49:52.745 UTC] Using DB environment at location : ./chain-data/chaindata
+  INFO [10-16|09:49:52.745 UTC] Initialized Blockchain Plugin
+  INFO [10-16|09:49:52.747 UTC] Started Engine Server
+  INFO [10-16|09:49:52.747 UTC] Started SHiP Receiver
+  INFO [10-16|09:49:52.748 UTC] Starting Blockchain Plugin
+  INFO [10-16|09:49:52.753 UTC] Connected to SHiP at 127.0.0.1:7070
+  INFO [10-16|09:49:52.753 UTC] Start Syncing blocks.
+  INFO [10-16|09:49:52.753 UTC] Determining effective canonical header.
+  INFO [10-16|09:49:52.753 UTC] Stored LIB at: #10'000
+  INFO [10-16|09:49:52.753 UTC] Search for block containing a valid eos id. Start from:#10'000
+  INFO [10-16|09:49:52.753 UTC] Get_head_canonical_header: #10'000, hash:2ecef7788e3bbf8099d559c2a6cf9069bdb21c0c6d106a2817700096392c3a65, mixHash:17c0370e54ec3b96eaaad7fe0783879a6174b887aef50ea17e37ef8a7402fbc5
+  INFO [10-16|09:49:52.753 UTC] Canonical header start from block: 398'472'975
+  INFO [10-16|09:49:52.753 UTC] Starting from block #398'472'975
+  INFO [10-16|09:49:52.753 UTC] Storing EVM Lib: #10'000
+  INFO [10-16|09:49:52.753 UTC] ExecutionEngine                    verifying chain 2ecef7788e3bbf8099d559c2a6cf9069bdb21c0c6d106a2817700096392c3a65
+  INFO [10-16|09:49:52.754 UTC] ExecPipeline                       Forward start --------------------------
+  INFO [10-16|09:49:52.754 UTC] [1/11 Headers]                     End, forward skipped, we are already at the target block (10'000)
+  INFO [10-16|09:49:52.754 UTC] ExecPipeline                       Forward done ---------------------------
+  INFO [10-16|09:49:55.642 UTC] Storing EVM Lib: #15'000
+  INFO [10-16|09:49:55.642 UTC] ExecutionEngine                    verifying chain 3d863b50f2d2bea79fe2682b2f85dae2ff966f25ca9384f224f27f7d71ae49cf
+  INFO [10-16|09:49:55.646 UTC] ExecPipeline                       Forward start --------------------------
+  INFO [10-16|09:49:55.646 UTC] [1/11 Headers]                     Updating headers from=10'000
+  INFO [10-16|09:49:55.656 UTC] [1/11 Headers]                     Updating completed, wrote 5'000 headers, last=15'000
+  INFO [10-16|09:49:55.742 UTC] [1/11 Headers]                     op=Forward done=95.233ms
+  INFO [10-16|09:49:55.742 UTC] [2/11 BlockHashes]                 op=Forward from=10000 to=15000 span=5000
+  INFO [10-16|09:49:55.754 UTC] [2/11 BlockHashes]                 op=Forward done=12.203ms
+  INFO [10-16|09:49:55.777 UTC] [3/11 Bodies]                      op=Forward done=23.288ms
+  INFO [10-16|09:49:55.777 UTC] [4/11 Senders]                     op=parallel_recover num_threads=20 max_batch_size=159783
+  INFO [10-16|09:49:55.797 UTC] [4/11 Senders]                     op=Forward done=19.992ms
+  INFO [10-16|09:49:55.797 UTC] [5/11 Execution]                   op=Forward from=10001 to=15000 span=5000
+  INFO [10-16|09:49:55.802 UTC] Flushed history                    size=43.95 KB in=187us
+  INFO [10-16|09:49:55.802 UTC] Flushed state                      size=0.00 B in=1us
+  INFO [10-16|09:49:55.824 UTC] [5/11 Execution] commit            batch time=21.165ms
+  INFO [10-16|09:49:55.824 UTC] [5/11 Execution]                   op=Forward done=26.494ms
+  INFO [10-16|09:49:55.824 UTC] [6/11 HashState]                   op=Forward from=10000 to=15000 span=5000
+  INFO [10-16|09:49:55.835 UTC] [6/11 HashState]                   op=Forward done=11.377ms
+  INFO [10-16|09:49:55.835 UTC] [7/11 IntermediateHashes] begin    op=Forward from=10000 to=15000 span=5000
+  INFO [10-16|09:49:55.853 UTC] [7/11 IntermediateHashes]          op=Forward done=17.749ms
+  INFO [10-16|09:49:55.853 UTC] [8/11 HistoryIndex]                op=Forward from=10000 to=15000 span=5000
+  INFO [10-16|09:49:55.889 UTC] [8/11 HistoryIndex]                op=Forward done=36.361ms
+  INFO [10-16|09:49:55.889 UTC] [9/11 LogIndex]                    op=Forward from=10000 to=15000 span=5000
+  INFO [10-16|09:49:55.898 UTC] [10/11 TxLookup]                   op=Forward from=10000 to=15000 span=5000
+  INFO [10-16|09:49:55.916 UTC] [10/11 TxLookup]                   op=Forward done=18.166ms
+  INFO [10-16|09:49:55.936 UTC] [11/11 Finish]                     op=Forward done=19.863ms
+  INFO [10-16|09:49:55.936 UTC] ExecPipeline                       Forward done ---------------------------
+  INFO [10-16|09:49:59.865 UTC] Storing EVM Lib: #20'000
+```
+
+
 - run the exSat EVM rpc services (must be in the same VM of exSat EVM chain node)
 ```
-./eos-evm-rpc --api-spec=eth,debug,net,trace --http-port=0.0.0.0:8881 --eos-evm-node=127.0.0.1:8080 --chaindata=./chain-data
+./eos-evm-rpc --api-spec=eth,debug,net,trace --chain-id=7200 --http-port=0.0.0.0:8881 --eos-evm-node=127.0.0.1:8080 --chaindata=./chain-data
 ```
+you should able to see outputs similar as following:
+```
+       [10-16|09:52:34.122 UTC] Silkrpc build info: eos-evm-rpc version: v1.0.1-d10d26a9305fb3870446098349d8be517a853abd
+       [10-16|09:52:34.122 UTC] Silkrpc libmdbx version: v0.12.0-71-g1cac6536 build: x86_64-ELF-Linux-Release compiler: cc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+       [10-16|09:52:34.122 UTC] Silkrpc launched with datadir "./chain-data" using 10 contexts, 16 workers
+       [10-16|09:52:34.155 UTC] Skip protocol version compatibility check with core services
+       [10-16|09:52:34.155 UTC] Starting ETH RPC API at 0.0.0.0:8881 ENGINE RPC API at
+       [10-16|09:52:34.157 UTC] Silkrpc is now running [pid=1'071'147, main thread=137'373'153'232'448]
+```
+
+
 - The EVM state, logs will be stored in ./chain-data directory
 
 The eos-evm-rpc will talk to eos-evm-node and provide the eth compatible RPC services, for example, you can check the current block number of eos-evm-node via:
 ```
 curl --location --request POST '127.0.0.1:8881/' --header 'Content-Type: application/json' --data-raw '{"method":"eth_blockNumber","params":["0x1",false],"id":0}'
 ```
-- if either spring or eos-evm-node can't start, follow the recovery process in the next session.
+example output:
+```
+{"id":0,"jsonrpc":"2.0","result":"0xa4e03"}
+```
 
 
 <a name="RMS"></a>
@@ -388,7 +468,8 @@ You can now use endpoint `http://127.0.0.1:80` in metamask for your own exSat EV
 
 <a name="RWP2"></a>
 ## [Optional] An alternative way to setting up the read write proxy:
-The following python program provides a simple way for the proxy:
+The following python program provides a simple way for the proxy (change the READ_RPC_ENDPOINT, WRITE_RPC_ENDPOINT and SERVER_PORT if necessary):
+
 ```
 #!/usr/bin/env python3
 import random
@@ -465,7 +546,7 @@ Periodic Backup service (not mandatory at the beginning, but highly recommended 
     | spring node (running in irreversible mode) | <----- | eos-evm-node & eos-evm-rpc    | 
     +--------------------------------------------+        +-------------------------------+         
 ```
-<b>Backup VM</b>: RAM minimum 32GB (64GB+ recommended). SSD 1TB+ (may grow as either native or exSat chain data grows)
+<b>Backup VM</b>: RAM minimum 32GB (64GB+ recommended). SSD 1TB+ (may grow as either native or exSat chain data grows)<br/>
 <b>spring node for backup config</b>: add `read-mode = irreversible` to backup spring node to run as irreversible mode.
 
 <b>Backup steps</b>:

@@ -17,8 +17,9 @@ Modify `package.json` to point to the master branch of `safe-singleton-factory` 
 +        "@safe-global/safe-singleton-factory": "github:safe-global/safe-singleton-factory#main",
 ```
 
-Set `MNEMONIC` in .env
-Edit `hardhat.config.ts` add `exSat Mainnet` as a new network.
+Set `MNEMONIC` in .env file
+
+Edit `hardhat.config.ts` add `exSat` as a new network.
 
 ```diff=
          zkSyncSepolia: {
@@ -70,7 +71,7 @@ deploying "SafeMigration" (tx: 0x9089eb2877f32bdc235d0299befb001fee5a7a606ed912c
 Add a new request in the [safe-eth-py](https://github.com/safe-global/safe-eth-py/issues/new?assignees=&labels=add-new-address&projects=&template=add_safe_address_new_chain.yml&title=%5BNew+chain%5D%3A+%7Bchain+name%7D) repo to support `exSat Mainnet` and follow the instructions in the issue template. See [exSat testnet request](https://github.com/safe-global/safe-eth-py/issues/1495) as an example.
 
 
-Wait for the `Validation successful!✅` message on the issue and for the automatically created PR to be merged on main.
+Wait for the `Validation successful!✅` message on the issue and for the [automatically created PR](https://github.com/safe-global/safe-eth-py/pull/1504) to be merged into main branch.
 
 Clone the `safe-eth-py` repo, checkout the main branch, build the python package and publish to the pip repository.
 
@@ -170,7 +171,7 @@ docker-compose up -d
 
 #### Configure safe-config-service
 
-Open http://1.2.3.4/cfg/admin/
+Open http://yourhost.com/cfg/admin/
 
 Create a new chain for exSat Mainnet.
 Besides the self descriptive fields, be sure to:

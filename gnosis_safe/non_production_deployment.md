@@ -193,3 +193,7 @@ _Block explorer uri api template_
 ```
 https://scan-testnet.exsat.network/api
 ```
+
+#### Production deployment
+
+For instruction on how to do a production deployment, complement these steps with the [following guide](https://github.com/safe-global/safe-infrastructure/blob/main/docs/running_production.md)

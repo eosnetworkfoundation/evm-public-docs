@@ -16,9 +16,9 @@ This document will describes the minimum requirements to deploy and support EOS 
 
 1. [Minimum Architecture](#MA)
 2. [Building necessary components](#BNC)
-3. [Running the EOS (leap) nodes with state_history_plugin](#REN)
+3. [Running the EOS (spring) nodes with state_history_plugin](#REN)
 4. [Running the eos-evm-node & eos-evm-rpc](#REE)
-5. [Backup & Recovery of leap & eos-evm-node](#BR)
+5. [Backup & Recovery of spring & eos-evm-node](#BR)
 6. [Running the eos-evm-miner service](#RMS)
 7. [[Exchanges Only]: Calculate the irreversible block number from EOS chain to EOS-EVM Chain](#CRB)
 8. [[EVM-Node operators Only]: Setting up the read-write proxy and explorer](#RWP)
@@ -37,59 +37,73 @@ This document will describes the minimum requirements to deploy and support EOS 
 This is the minimum setup to run a EOS EVM service. It does not contain the high availability setup. Exchanges can duplicate the real-time service part for high availability purpose if necessary. 
 ```
 Real-time service:
-    +--VM1------------------------------+       +--VM2-----------------------+
-    | leap node running in head mode    | <---- | eos-evm-node & eos-evm-rpc | <-- eth compatible read requests (e.g. eth_getBlockByNumber, eth_call ...)
-    | with state_history_plugin enabled |       +----------------------------+
-    +-----------------------------------+              
-                                       ^
-                                       |                           +--VM2--------------------+
-                                       \-- push EOS transactions --| eos-evm-miner (wrapper) | <-- eth_gasPrice / eth_sendRawTransaction
-                                                                   +-------------------------+
+    +--VM1 (spring node) ----------+     +--VM2 (EOS-EVM node)--------+
+    | EOS main node process with   | <-- | eos-evm-node & eos-evm-rpc | <-- eth compatible read requests 
+    | state_history_plugin enabled |     +----------------------------+     (e.g. eth_getBlockByNumber, eth_call ...)
+    +------------------------------+               \
+                   ^                                \    +--- VM2 (EOS-EVM node)----+
+                   |                                 <-- | proxy to separate read & |
+                   |                                /    | write requests (optional)| 
+                   |                               /     +--------------------------+
+                   |                              /
+                   |                           +--VM2 (EOS-EVM node)-----+
+                   \-- push EOS transactions --| eos-evm-miner (wrapper) | <-- eth_gasPrice 
+                                               +-------------------------+     eth_sendRawTransaction
 
 Periodic Backup service: 
-    +--VM3-------------------------------------+        +--VM3-----------------------+
-    | leap node running in irreversible mode    | <----- | eos-evm-node & eos-evm-rpc | 
+    +--VM3 (Backup VM) ------------------------+        +-- VM3 (Backup VM) ---------+
+    | spring node running in irreversible mode | <----- | eos-evm-node & eos-evm-rpc | 
     | with state_history_plugin enabled        |        +----------------------------+
     +------------------------------------------+         
 ```
-Leap node stands for the EOS (Level 1) blockchain, and eos-evm-node stands for the EOS-EVM (Level 2) blockchain. eos-evm-rpc talk to eos-evm-node 
+spring node stands for the EOS (Level 1) blockchain, and eos-evm-node stands for the EOS-EVM (Level 2) blockchain. eos-evm-rpc talk to eos-evm-node 
  in the same VM and it is used for providing read-only ETH APIs (such as eth_getBlockByNumber, eth_call, eth_blockNumber, ... ) which is compatible with standard ETH API. For ETH write requests eth_sendRawTransaction, and eth_gasPrice, they will be served via eos-evm-miner instead of eos-evm-rpc.
  
-- VM1: this VM will run EOS leap node in head mode with state_history_plugin enable. A high end CPU with good single threaded performance is recommended. RAM: 64GB+, SSD 2TB+ (for storing block logs & state history from the EVM genesis time (2023-04-05T02:18:09 UTC) up to now)
+- VM1: this VM will run EOS spring node with state_history_plugin enabled. A high end CPU with good single threaded performance is recommended. RAM: 128GB+, SSD 2TB+ (for storing block logs & state history from the EVM genesis time (2023-04-05T02:18:09 UTC) up to now)
 - VM2: this VM will run eos-evm-node, eos-evm-rpc & eos-evm-miner. Recommend to use 8 vCPU, 32GB+ RAM, and 1TB+ SSD
-- VM3: this VM will run leap (in irrversible mode), eos-evm-node & eos-evm-rpc and mainly for backup purpose. Recommend to use 8 vCPU, 64GB+ RAM, 3TB+ SSD (backup files can be large).
+- VM3: this VM will run spring (in irrversible mode), eos-evm-node & eos-evm-rpc and mainly for backup purpose. Recommend to use 8 vCPU, 128GB+ RAM, 3TB+ SSD (backup files can be large).
 
 
 <a name="BNC"></a>
 ## Building necessary components:
 OS: Recommend to use ubuntu 22.04
-- EOS (leap) Node: please refer to https://github.com/AntelopeIO/leap
-- eos-evm-node, eos-evm-rpc:
+
+- EOS (spring) Node: the main process for EOS chain
+please refer to https://github.com/AntelopeIO/spring
+The latest pre-built stable version can be downloaded from https://github.com/AntelopeIO/spring/releases
+
+
+- eos-evm-node, eos-evm-rpc: the main process for EOS-EVM chain
+Please build the latest stable version in https://github.com/eosnetworkfoundation/eos-evm-node
+
+for example, the latest stable version is v1.0.1 up to the time of writing this doc.
 ```
 git clone https://github.com/eosnetworkfoundation/eos-evm-node.git
 cd eos-evm-node
-git checkout release/0.6
+git checkout v1.0.1
 git submodule update --init --recursive
 mkdir build; cd build;
 cmake .. && make -j8
 ```
-for more details please refer to https://github.com/eosnetworkfoundation/eos-evm-node
 
 - Eos-evm-miner: please refer to https://github.com/eosnetworkfoundation/eos-evm-miner
 
+- Proxy to separate read requests & write requests: please refer to https://github.com/eosnetworkfoundation/eos-evm-node/tree/main/peripherals/proxy
+
+
+
 <a name="REN"></a>
-## Running the EOS (leap) nodes with state_history_plugin (with trace-history=true)
+## Running the EOS (spring) nodes with state_history_plugin (with trace-history=true)
 
 - For the first time: You need a snapshot file whose timestamp is before the EVM genesis timestamp 2023-04-05T02:18:09 UTC.
 - The block log and state history logs need to be replayed from the snapshot time and need to be saved together in the periodic backup.
 - You need to keep the block logs, state-history logs starting from the snapshot point. This is because eos-evm-node may ask for old blocks for replaying the EVM chain. 
 - You can download the snapshot from any public EOS snapshot service providers (such as https://snapshots.eosnation.io/), or use your own snapshot.
-- Supported version: Leap 4.x (recommended), Leap 3.x
+- Supported version: spring 1.0 or newer versions
   
 example data-dir/config.ini
 ```
-# 96GB for VM with 128GB RAM, possible require bigger VM in the future
-chain-state-db-size-mb = 98304
+chain-state-db-size-mb = 184320
 
 access-control-allow-credentials = false
 
@@ -123,16 +137,55 @@ plugin = eosio::db_size_api_plugin
 ```
 example run command (VM1, head or speculative mode):
 ```
-sudo ./nodeos --p2p-accept-transactions=0 --database-map-mode=locked --data-dir=./data-dir  --config-dir=./data-dir --http-max-response-time-ms=200 --disable-replay-opts --max-body-size=10000000
+./nodeos --p2p-accept-transactions=0 --data-dir=./data-dir  --config-dir=./data-dir --http-max-response-time-ms=200 --disable-replay-opts --max-body-size=10000000
 ```
 example run command (VM3, irreversible mode):
 ```
-sudo ./nodeos --read-mode=irreversible --p2p-accept-transactions=0 --database-map-mode=locked --data-dir=./data-dir  --config-dir=./data-dir --http-max-response-time-ms=200 --disable-replay-opts --max-body-size=10000000
+./nodeos --read-mode=irreversible --p2p-accept-transactions=0 --data-dir=./data-dir  --config-dir=./data-dir --http-max-response-time-ms=200 --disable-replay-opts --max-body-size=10000000
 ```
 Notes:
 - To boost performance, it is important to set "--p2p-accept-transactions=0" to disallow executing transactions (which are not yet included in a blocks) received from other peers.
-- `--database-map-mode=locked` requires sudo access. it is recommended but not mandatory.
 - for the 1st time, run it also with `--snapshot=SNAPSHOT_FILE` to begin with the snapshot state.
+
+
+### Verify the native chain node.
+use `./cleos get info` to check if the node the in-sync with the native network (via the head_block_time), for example:
+```
+./cleos get info
+{
+  "server_version": "57465074",
+  "chain_id": "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
+  "head_block_num": 399277762,
+  "last_irreversible_block_num": 399277760,
+  "last_irreversible_block_id": "17cc7ec09ef0f9d50c7a7da3751f370ae215912d1f4588b968f4e1d14a257858",
+  "head_block_id": "17cc7ec2498e4dae12046843502ec8c88bfdbee801b96aa1ba58ea6e3f2508d6",
+  "head_block_time": "2024-10-14T02:30:34.000",
+  "head_block_producer": "big.one",
+  "virtual_block_cpu_limit": 200000,
+  "virtual_block_net_limit": 1048576000,
+  "block_cpu_limit": 200000,
+  "block_net_limit": 1048576,
+  "server_version_string": "v1.0.1",
+  "fork_db_head_block_num": 399277762,
+  "fork_db_head_block_id": "17cc7ec2498e4dae12046843502ec8c88bfdbee801b96aa1ba58ea6e3f2508d6",
+  "server_full_version_string": "v1.0.1-574650744460373f635d48cac9aa6dee67dcbfdb",
+  "total_cpu_weight": "382730335491165",
+  "total_net_weight": "95742723072332",
+  "earliest_available_block_num": 399104422,
+  "last_irreversible_block_time": "2024-10-14T02:30:33.000"
+}
+```
+
+### verify the chain-state (database) size usage: 
+use `curl http://127.0.0.1:8888/v1/db_size/get`, for example
+```
+curl http://127.0.0.1:8888/v1/db_size/get 2>/dev/null | jq
+{
+  "free_bytes": "92051578720",
+  "used_bytes": "101221948576",
+  "reclaimable_bytes": 157837488,
+  "size": "193273527296",
+```
 
 
 <a name="REE"></a>
@@ -154,13 +207,17 @@ The eos-evm-rpc will talk to eos-evm-node and provide the eth compatible RPC ser
 ```
 curl --location --request POST '127.0.0.1:8881/' --header 'Content-Type: application/json' --data-raw '{"method":"eth_blockNumber","params":["0x1",false],"id":0}'
 ```
-- if either leap or eos-evm-node can't start, follow the recovery process in the next session.
+example output:
+```
+{"id":0,"jsonrpc":"2.0","result":"0xa4e03"}
+```
+- if either spring or eos-evm-node can't start, follow the recovery process in the next session.
 
 <a name="BR"></a>
-## Backup & Recovery of leap & eos-evm-node
+## Backup & Recovery of spring & eos-evm-node
 - It is quite important for node operator to backup all the state periodically (for example, once per day).
-- backup must be done on the leap node running in irreversible mode. And because of such, all the blocks in eos-evm-node has been finialized and it will never has a fork.
-- create the nodeos (leap) snapshot:
+- backup must be done on the spring node running in irreversible mode. And because of such, all the blocks in eos-evm-node has been finialized and it will never has a fork.
+- create the nodeos (spring) snapshot:
   ```
   curl http://127.0.0.1:8888/v1/producer/create_snapshot
   ```
@@ -172,10 +229,15 @@ pkill eos-evm-rpc
 sleep 2.0
 pkill nodeos
 ```
-- backup leap's data-dir folder and eos-evm-node's chain-data
-- restart back nodeos, eos-evm-node & eos-evm-rpc
-- for leap recovery, please restore the data-dir folder of the last backup and use the leap's snapshot
+- backup spring's data-dir folder and eos-evm-node's chain-data
+- restart nodeos wait until the nodeos sync-up (use ```./cleos get info``` to verify)
+- restart eos-evm-node & eos-evm-rpc
+
+Recover process:
+- for spring recovery, please restore the data-dir folder of the last backup and use the spring's snapshot
 - for eos-evm-node recovery, please restore the chain-data folder of the last backup.
+
+
 
 <a name="RMS"></a>
 ## Running the eos-evm-miner service 
@@ -213,11 +275,12 @@ curl http://127.0.0.1:18888 -X POST -H "Accept: application/json" -H "Content-Ty
 {"jsonrpc":"2.0","id":1,"result":"0x22ecb25c00"}
 ```
 
+
 <a name="CRB"></a>
 ## [For centralized exchanges] Calculate the irreversible block number from EOS (L1) chain to EOS-EVM (L2) Chain
 For centralized exchanges it is important to know up to which block number the chain is irreversible. This is the way to calculate the irreversible time of EOS-EVM:
-- ensure the leap node & eos-evm-node are fully sync-up.
-- do a get_info request to leap node.
+- ensure the spring node & eos-evm-node are fully sync-up.
+- do a get_info request to spring node.
 ```
 {
   "server_version": "943d1134",
@@ -274,17 +337,171 @@ For example:
 - 4. Since all transactions up 9:01:00AM are irreversible, we scan each EVM block between 9:00:00AM and 9:01:01AM (1 sec max timestamp difference between EOS and EOS-EVM blocks) to confirm whether the transaction is included in the EVM blockchain (so as the native EOS blockchain). We can confirm the withdrawal is successfull if we find the transaction in this range. Otherwise, the transaction is already expired and can not be included in the blockchain.
 - 5. Alternative to 4, instead of scanning all blocks in the time range, we can get the nonce number of the EVM account to confirm if the withdrawal is successful. But this method only works if there is only one withdrawal pending under that EVM account.
 
+
+
 <a name="RWP"></a>
 ## [Optional] For EVM-Node operators Only: Setting up the read-write proxy and explorer
-This is same as https://github.com/eosnetworkfoundation/eos-evm/blob/main/docs/local_testnet_deployment_plan.md
-- Setup the read-write proxy to integrate the ETH read requests (eos-evm-rpc) & write requests (eos-evm-miner) together with a single listening endpoint.
-- Setup your own EOS-EVM Explorer
+
+Follow the build process in https://github.com/eosnetworkfoundation/eos-evm-node/tree/main/peripherals/proxy
+
+The proxy program will separate Ethereum's write requests (such as eth_sendRawTransaction,eth_gasPrice) from other requests (treated as read requests). The write requests should go to Transaction Wrapper (which wrap the ETH transaction into Antelope transaction and sign it and push to the Antelope blockchain). The read requests should go to eos-evm-rpc.
+
+In order to get it working, docker is required. To install docker in Linux, see https://docs.docker.com/engine/install/ubuntu/
+
+```shell
+cd eos-evm-node/peripherals/proxy/
+```
+
+- Edit the file `nginx.conf`, find the follow settings:
+
+```json
+  upstream write {
+    server 192.168.56.101:18888;
+  }
+  
+  upstream read {
+    server 192.168.56.101:8881;
+  }
+```
+
+- Change the IP and port of the write session to your Transaction Wrapper server endpoint.
+- Change the IP and port of the read session to your eos-evm-rpc server endpoint
+- Build the docker image for the proxy program:
+
+```shell
+sudo docker build .
+```
+
+- Check the image ID after building the image
+
+```shell
+sudo docker image ls
+```
+
+Example output:
+
+```txt
+REPOSITORY   TAG       IMAGE ID       CREATED         SIZE
+<none>       <none>    49564d312df7   2 hours ago     393MB
+debian       jessie    3aaeab7a4777   19 months ago   129MB
+```
+
+- Run the proxy in docker:
+
+```shell
+sudo docker run -p 81:80 -v ${PWD}/nginx.conf:/etc/nginx.conf 49564d312df7
+```
+
+In the commmand above we map the host port 81 to the port 80 inside the docker.
+
+- Check if the proxy is responding:
+
+```shell
+echo "=== test 8881 rpc ==="
+curl --location --request POST '127.0.0.1:8881/' --header 'Content-Type: application/json' --data-raw '{"method":"eth_blockNumber","params":["0x1",false],"id":0}'
+echo "=== test 80 proxy->rpc ==="
+curl --location --request POST '127.0.0.1:80/' --header 'Content-Type: application/json' --data-raw '{"method":"eth_blockNumber","params":["0x1",false],"id":0,"jsonrpc":"2.0"}'
+echo "=== test 18888 wrapper ==="
+curl http://127.0.0.1:18888 -X POST -H "Accept: application/json" -H "Content-Type: application/json" --data '{"method":"eth_gasPrice","params":[],"id":1,"jsonrpc":"2.0"}'
+echo ""
+echo "=== test 80 proxy->wrapper ==="
+curl http://127.0.0.1:80 -X POST -H "Accept: application/json" -H "Content-Type: application/json" --data '{"method":"eth_gasPrice","params":[],"id":1,"jsonrpc":"2.0"}'
+echo ""
+```
+
+Example response:
+```
+=== test 8881 rpc ===
+{"id":0,"jsonrpc":"2.0","result":"0x2f0d68f"}
+=== test 80 proxy->rpc ===
+{"id":0,"jsonrpc":"2.0","result":"0x2f0d68f"}
+=== test 18888 wrapper ===
+{"jsonrpc":"2.0","id":1,"result":"0x45d964b800"}
+=== test 80 proxy->wrapper ===
+{"jsonrpc":"2.0","id":1,"result":"0x45d964b800"}
+```
+
+You can now use endpoint `http://127.0.0.1:80` in metamask for your own exSat EVM account operations.
+
+
+<a name="RWP2"></a>
+## [Optional] An alternative way to setting up the read write proxy:
+The following python program provides a simple way for the proxy (change the READ_RPC_ENDPOINT, WRITE_RPC_ENDPOINT and SERVER_PORT if necessary):
+
+```
+#!/usr/bin/env python3
+import random
+import os
+import json
+import time
+import calendar
+from datetime import datetime
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from eth_hash.auto import keccak
+import requests
+import json
+
+from binascii import unhexlify
+
+readEndpoint = os.getenv("READ_RPC_ENDPOINT","http://127.0.0.1:8881")
+writeEndpoint = os.getenv("WRITE_RPC_ENDPOINT", "http://127.0.0.1:18888")
+listenPort = os.getenv("SERVER_PORT", 5000)
+ssl_cert = os.getenv("SSL_CERT","")
+ssl_keyfile = os.getenv("SSL_KEYFILE","")
+
+writemethods = {"eth_sendRawTransaction","eth_gasPrice"}
+
+try:
+    app = Flask(__name__)
+    CORS(app)
+
+    @app.route("/", methods=["POST"])
+    def default():
+        def forward_request(req):
+            if type(req) == dict and ("method" in req) and (req["method"] in writemethods):
+                print("write req:" + str(req))
+                resp = requests.post(writeEndpoint, json.dumps(req), headers={"Accept":"application/json","Content-Type":"application/json"}).json()
+                print("write resp:" + str(resp))
+                return resp
+            else:
+                resp = requests.post(readEndpoint, json.dumps(req), headers={"Accept":"application/json","Content-Type":"application/json"}).json()
+                print("resp is:" + str(resp))
+                return resp;
+
+        request_data = request.get_json()
+        if type(request_data) == dict:
+            print("req is:" + str(request_data));
+            return jsonify(forward_request(request_data))
+
+        res = []
+        for r in request_data:
+            res.append(forward_request(r))
+
+        return jsonify(res)
+
+    if len(ssl_cert) > 0 and len(ssl_keyfile) > 0:
+        print("Running in SSL mode")
+        app.run(host='0.0.0.0',port=listenPort,ssl_context=(ssl_cert, ssl_keyfile))
+    else:
+        print("Running in non-SSL mode")
+        app.run(host='0.0.0.0', port=listenPort)
+finally:
+    exit(0)
+```
+
+
+### Setup explorer:
+follow https://github.com/eosnetworkfoundation/eos-evm/blob/main/docs/local_testnet_deployment_plan.md to setup your own EOS-EVM Explorer
+
+
 
 <a name="REPLAY"></a>
 ## Replay the EVM chain for major version upgrades
 Sometime full EVM chain is required if there's a major version upgrade of eos-evm-node. This is the suggested replay process:
-- 1. Use the backup VM (in which leap node is running in irreversible mode so that it won't be any forks) for replaying
-- 2. Gracefully shutdown eos-evm-rpc & eos-evm-node, keep leap node running.
+- 1. Use the backup VM (in which spring node is running in irreversible mode so that it won't be any forks) for replaying
+- 2. Gracefully shutdown eos-evm-rpc & eos-evm-node, keep spring node running.
 - 3. Backup the eos-evm-node data folder (specified in --chain-data parameter).
 - 4. Delete everything in the --chain-data folder, but keep the folder itself
 - 5. Replace the eos-evm-node & eos-evm-rpc to the new version
@@ -299,7 +516,7 @@ curl --location --request POST '127.0.0.1:8881/' --header 'Content-Type: applica
 
 <a name="KL"></a>
 ## Known Limitations
-- Eos-evm-node will gracefully stop if the state-history-plugin connection in Leap node is dropped. Exchanges or node operators need to have auto-restart script to restart eos-evm-node (and choose the available leap end-point if high availability setup exist)
+- Eos-evm-node will gracefully stop if the state-history-plugin connection in spring node is dropped. Exchanges or node operators need to have auto-restart script to restart eos-evm-node (and choose the available spring end-point if high availability setup exist)
 
 - In some rare case, eos-evm-node can not handle forks happened in Native EOS (L1) chain. Exchanges or node operators may need to run the recovery process.
 

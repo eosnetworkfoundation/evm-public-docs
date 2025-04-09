@@ -5,7 +5,7 @@ The EVM Trustless Bridge contract provides the trustless bridging solutions betw
 - Type 2: ERC-20 compatible tokens that originated from EVM layer 2 on Antelope blockchain
 
 **Advantages:**
-- Bridge transfer between native and EVM is performed atomically within a single transaction. Any failure will fails and revert the whole transaction without asset loss.
+- Bridge transfer between native and EVM is performed atomically within a single transaction. Any failure will fail and revert the whole transaction without asset loss.
 - Precisions can be different between native side and EVM side. (Usually ERC20 tokens have more precision than native tokens)
 
 **Architectures:**
@@ -27,7 +27,7 @@ user 0x5B38...
  |           +---- EVM world -------+                            + native world +            + native world +
  +- call ->  | bridgeTransfer() on  | -- 1. burn token in EVM    |              |            | erc bridge   |
              | erc20-token contract | -- 2. bridgeMessage -----> | evm_runtime  | - notify ->| contract     |-> send token to userabc
-             | (deployed by brige)  |                            | contract     |            +--------------+
+             | (deployed by bridge) |                            | contract     |            +--------------+
              +----------------------+                            +--------------+
 ```
 
@@ -38,7 +38,7 @@ user 0x5B38...
 Send token from EVM to native:
 
 user 
-0x5B38... -- call ERC20-token::approve(sender = portal contract (deployed by the erc bridge contract in regevm2nat action), amount=bridge amount)
+0x5B38... -- call ERC20-token::approve(spender = portal contract (deployed by the erc bridge contract in regevm2nat action), amount=bridge amount)
 
 user 0x5B38...
  |            +---- EVM world -------+                            + native world +            + native world +
@@ -155,12 +155,12 @@ from https://bridge.evm.eosnetwork.com/, find out the destination reserved addre
 for GOLD, we need to approve efb6a2241f3cc0e740a9aab830ef729130667574 as spender:
 call 4d9dbb271ee2962f8becd3b27e3ebcd384ad3171::approve(spender = efb6a2241f3cc0e740a9aab830ef729130667574, amount).
 
-for USDT, call 33b57dc70014fd7aa6e1ed3080eed2b619632b8e::bridgeTransfer(address to, uint256 amount, string memory)
-or for GOLD, call efb6a2241f3cc0e740a9aab830ef729130667574::bridgeTransfer(address to, uint256 amount, string memory) in remix or any other EVM compatible tools.
+for USDT, call 33b57dc70014fd7aa6e1ed3080eed2b619632b8e::bridgeTransfer(address to, uint256 amount, string memo)
+or for GOLD, call efb6a2241f3cc0e740a9aab830ef729130667574::bridgeTransfer(address to, uint256 amount, string memo) in remix or any other EVM compatible tools.
 
 with the parameters set to:
 - to: 0xbbbbbbbbbbbbbbbbbbbbbbbbd615731d00000000
 - amount: 1000000000000000000 (1 USDT/GOLD, assume the token precision is 18)
-- memory: empty or any string as "memo" field in native transfer
+- memo: empty or any string as "memo" field in native transfer
 
 ```

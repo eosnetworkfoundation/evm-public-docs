@@ -92,7 +92,7 @@ You can also verify that for new account ops, it will cost 2.5Gwei x 40664236 = 
 
 - 5. Try different types of EVM transaction and verify the gas price and gas fee:
 
-  gas price: at least 5 Gwei. (Max of overhead price & storage price).
+  `gas price` = 5 Gwei (minimum) (requires `gas price` >= max of (`overhead price` & `storage price`)). `inclusion price` = 0Gwei.
   - Basic gas token transfer to existing account: 21000 gas (=0.0001 EOS) (using gas price = 5Gwei)
   - Basic gas token transfer to new account: 20353118 gas (=0.1017 EOS) (It need 40664236 gas to cover the RAM cost in the worst case. Since gas price is 5Gwei, but the storage price is 2.5Gwei, it will discount the gas usage by around 50%)
   - ERC-20 token transfer to existing account: 42620 gas (=0.0002 EOS)
@@ -115,9 +115,9 @@ storage_price=5000000000
 wait for 3 minutes until the new prices are effective
 
 - verify the new gas consumption and gas fee (using gas price = 5Gwei, inclusion price = 0Gwei)
-  - Basic gas token transfer to new account: 40685236 gas (0.2034 EOS) (Notice that since storage price = gas price = 5Gwei, there is no discount to storage related gas consumption if inclusion price is set to zero, or in the case where transactions are initiated via the `call` action. It will still have some discounts for EVM transactions normally sent to the endpoint since the EVM miner enforces a positive minimum inclusion price.)
+  - Basic gas token transfer to new account: 40685236 gas (0.2034 EOS) (Notice that since `storage price` = `gas price` = 5Gwei, there is no discount to storage related gas consumption if `inclusion price` is set to zero, or in the case where transactions are initiated via the `call` action. It will still have some discounts for EVM transactions normally sent to the endpoint since the EVM miner enforces a positive minimum inclusion price.)
   - Basic gas token transfer to existing account: 21000 gas (=0.0001 EOS)
 
-<h2><b>For EVM-miners: monitoring current CPU cost and update the minimum inclusion price in your miner configurations</b></h2>
+<h2><b>For EVM-miners: monitor current CPU cost and update the minimum inclusion price in miner's configurations</b></h2>
 
-CPU cost in native Vaulta chain varies from time to time, depends on the congestion of the network. EVM miners should periodically monitor the miner fee collected (final gas usage x inclusion price) as well as the actualy cpu resource, and update their minimum inclusion price settings to maintain profitability. Refer to https://github.com/VaultaFoundation/evm-miner for miner configuration details.
+CPU cost in native Vaulta chain varies from time to time, depending on the congestion of the network. EVM miners should periodically monitor the miner fee collected (final `gas usage` x `inclusion price`) in each transactions as well as the actual cpu resource billed, and update their minimum inclusion price settings to maintain profitability. Refer to https://github.com/VaultaFoundation/evm-miner for miner configuration details.

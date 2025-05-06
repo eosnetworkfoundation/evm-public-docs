@@ -96,14 +96,18 @@ You can also verify that for new account ops, it will cost 2.5Gwei x 40664236 = 
   - Basic gas token transfer to existing account: 21000 gas (=0.0001 EOS) (using gas price = 5Gwei)
   - Basic gas token transfer to new account: 20353118 gas (=0.1017 EOS) (It need 40664236 gas to cover the RAM cost in the worst case. Since gas price is 5Gwei, but the storage price is 2.5Gwei, it will discount the gas usage by around 50%)
   - ERC-20 token transfer to existing account: 42620 gas (=0.0002 EOS)
-  - ERC-20 token transfer to new account: 20317594 gas (=0.1017 EOS). (similar reason as basic gas token transfer to new account)
+  - ERC-20 token transfer to new account: 20317594 gas (=0.1016 EOS). (similar reason as basic gas token transfer to new account)
+
+  `gas price` = 5 Gwei (minimum) (requires `gas price` >= max of (`overhead price` & `storage price`)). `inclusion price` = 5Gwei.
+  - ERC-20 token transfer to existing account: 42620 gas (=0.0002 EOS)
+  - ERC-20 token transfer to new account: 10180107 gas (=0.1018 EOS). (it will have further discount when `inclusion price` > 0 since miner should not get the storage related gas consumption)
 
 
-<h2><b>Monitor RAM cost regularly and adjust storage_price to align with the current RAM/CPU cost.</b></h2>
+<h2><b>Monitor RAM cost regularly and adjust storage_price to align with the current RAM cost.</b></h2>
 
-For example, if RAM price has increased from 0.3EOS/KB to 0.6EOS/KB, we then change the `storage_price` which is 2x of the original using `setgasprices` action. This operation can be done frequently (for example once per 10 minutes) as RAM or CPU price change.
+For example, if RAM price has increased from 0.3EOS/KB to 0.6EOS/KB, we then change the `storage_price` which is 2x of the original using `setgasprices` action. This operation can be done frequently (for example once per 10 minutes) as RAM price change.
 
-However, since action `updtgasparam` will re-define the gas costs for storage related operations, which might break the compatibility of existing dapps, this operation should rarely be called unless there is a significant divergence between the current RAM price and the RAM price used in the last `updtgasparam` operation. For example, if the RAM price has increased enough to cause the updated `storage_price` (on the last setgasprices action call) to be greater than the `overhead_price` (which typically would not be changed), then there is a slightly stronger motivation to call `updtgasparam` because there would be an explicit gas refund to account for the excess fees collected for the overhead costs. That explicit gas refund would not occur when `storage_price` < `overhead_price`. This isn't a big deal, but it can look strange to the user that the gas estimation requires a much higher gas limit on the transaction than the final gas usage (after gas refund) that is billed for the transaction.
+However, since action `updtgasparam` will re-define the gas costs for storage related operations, which might break the compatibility of existing dapps, this operation should rarely be called unless there is a significant divergence between the current RAM price and the RAM price used in the last `updtgasparam` operation. For example, if the RAM price has increased enough to cause the updated `storage_price` (on the last `setgasprices` action call) to be greater than the `overhead_price` (which typically would not be changed), then there is a slightly stronger motivation to call `updtgasparam` because there would be an explicit gas refund to account for the excess fees collected for the overhead costs. That explicit gas refund would not occur when `storage_price` < `overhead_price`. An explicit gas refund is not a problem, but it can look strange to the user that the gas estimation requires a much higher gas limit on the transaction than the final gas usage (after gas refund) that is billed for the transaction.
 
 This is the command example if RAM price has increased to 0.6EOS/KB. 
 ```
@@ -114,9 +118,15 @@ storage_price=5000000000
 
 wait for 3 minutes until the new prices are effective
 
-- verify the new gas consumption and gas fee (using gas price = 5Gwei, inclusion price = 0Gwei)
-  - Basic gas token transfer to new account: 40685236 gas (0.2034 EOS) (Notice that since `storage price` = `gas price` = 5Gwei, there is no discount to storage related gas consumption if `inclusion price` is set to zero, or in the case where transactions are initiated via the `call` action. It will still have some discounts for EVM transactions normally sent to the endpoint since the EVM miner enforces a positive minimum inclusion price.)
+- verify the new gas consumption and gas fee (using `gas price` = 5Gwei, `inclusion price` = 0Gwei)
+  - Basic gas token transfer to new account: 40685236 gas (0.2034 EOS) (Notice that since `storage price` = `gas price` = 5Gwei, there is no discount to storage related gas consumption)
   - Basic gas token transfer to existing account: 21000 gas (=0.0001 EOS)
+  - ERC-20 token transfer to existing account: 42620 gas (=0.0002 EOS)
+  - ERC-20 token transfer to new account: 40592568 gas (=0.2030 EOS). (similar reason as basic gas token transfer to new account)
+ 
+- verify the new gas consumption and gas fee (using `gas price` = 5Gwei, `inclusion price` = 5Gwei)
+  - ERC-20 token transfer to existing account: 42620 gas (=0.0002 EOS)
+  - ERC-20 token transfer to new account: 20317594 gas (=0.2032 EOS). (it will have some discount when `inclusion price` > 0 since miner should not get the storage related gas consumption)
 
 <h2><b>For EVM-miners: monitor current CPU cost and update the minimum inclusion price in miner's configurations</b></h2>
 

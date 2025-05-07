@@ -99,7 +99,7 @@ You can also verify that for new account ops, it will cost 2.5Gwei x 40664236 = 
   - ERC-20 token transfer to new account: 20317594 gas (=0.1016 EOS). (similar reason as basic gas token transfer to new account)
 
   `gas price` = 5 Gwei (minimum) (requires `gas price` >= max of (`overhead price` & `storage price`)). `inclusion price` = 5Gwei.
-  - ERC-20 token transfer to existing account: 42620 gas (=0.0002 EOS)
+  - ERC-20 token transfer to existing account: 42620 gas (=0.0004 EOS)
   - ERC-20 token transfer to new account: 10180107 gas (=0.1018 EOS). (it will have further discount when `inclusion price` > 0 since miner should not get the storage related gas consumption)
 
 
@@ -125,7 +125,7 @@ wait for 3 minutes until the new prices are effective
   - ERC-20 token transfer to new account: 40592568 gas (=0.2030 EOS). (similar reason as basic gas token transfer to new account)
  
 - verify the new gas consumption and gas fee (using `gas price` = 5Gwei, `inclusion price` = 5Gwei)
-  - ERC-20 token transfer to existing account: 42620 gas (=0.0002 EOS)
+  - ERC-20 token transfer to existing account: 42620 gas (=0.0004 EOS)
   - ERC-20 token transfer to new account: 20317594 gas (=0.2032 EOS). (it will have some discount when `inclusion price` > 0 since miner should not get the storage related gas consumption)
 
 <h2><b>For EVM-miners: monitor current CPU cost and update the minimum inclusion price in miner's configurations</b></h2>
